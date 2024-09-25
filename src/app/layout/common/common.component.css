@@ -1,0 +1,17 @@
+/* Apply to the main layout component or a global stylesheet */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full viewport height */
+}
+
+main {
+  flex: 1; /* Allow main content to expand and fill the space */
+}
