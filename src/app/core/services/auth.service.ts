@@ -31,6 +31,7 @@ export class AuthService {
       .post<LoginResp>(`${this.apiUrl}/auth?userType=${userType}`, credentials)
       .pipe(
         tap((response: LoginResp) => {
+          this.setUserType(userType);
           this.setToken(response.token);
           this.setUserData(response.data);
           this.router.navigate(['/dashboard']);
@@ -72,6 +73,15 @@ export class AuthService {
   getUserData(): TerminalData | TrCompanyData {
     const userData = localStorage.getItem('userData');
     return userData ? JSON.parse(userData) : [];
+  }
+
+  setUserType(userType: UserType) {
+    localStorage.setItem('userType', userType);
+  }
+
+  getUserType(): UserType {
+    const userType = localStorage.getItem('userType');
+    return userType as UserType;
   }
 
   logout() {
