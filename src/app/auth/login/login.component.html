@@ -1,6 +1,7 @@
 <div class="login-container">
   <div class="login-section">
     <h2>Login</h2>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="email">Email:</label>
@@ -58,12 +59,16 @@
             <input
               type="radio"
               formControlName="userType"
-              value="truckingCompany"
+              [value]="userType.TruckingCompany"
             />
             Trucking Company
           </label>
           <label>
-            <input type="radio" formControlName="userType" value="terminal" />
+            <input
+              type="radio"
+              formControlName="userType"
+              [value]="userType.Terminal"
+            />
             Terminal
           </label>
         </div>
@@ -80,11 +85,21 @@
 
       <button
         type="submit"
-        [disabled]="loginForm.invalid"
+        [disabled]="loginForm.invalid || isLoading"
         class="btn btn-primary"
       >
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
         Login
       </button>
     </form>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+      {{ errorMessage }}
+    </div>
   </div>
 </div>
