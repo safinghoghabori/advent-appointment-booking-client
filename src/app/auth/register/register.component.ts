@@ -6,6 +6,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { UserType } from '../login/models/login.model';
+import { AuthService } from '../../core/services/auth.service';
+import { TerminalFormData, TrCompanyFormData } from './models/register.model';
 
 @Component({
   selector: 'app-register',
@@ -16,16 +19,19 @@ import {
 })
 export class RegisterComponent {
   registrationForm: FormGroup;
-  selectedRole: string | null = null;
+  userType = UserType;
+  selectedRole: UserType | null = null;
+  isLoading: boolean = false;
+  errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registrationForm = this.fb.group({
       role: ['', Validators.required],
       truckingCompany: this.fb.group({
-        companyName: ['', Validators.required],
+        trCompanyName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        gstNumber: ['', Validators.required],
+        gstNo: ['', Validators.required],
         transportLicNo: ['', Validators.required],
       }),
       terminal: this.fb.group({
@@ -45,10 +51,10 @@ export class RegisterComponent {
   toggleRoleFields(): void {
     // Reset role-specific form sections
     this.selectedRole = this.registrationForm.get('role')?.value;
-    if (this.selectedRole === 'truckingCompany') {
+    if (this.selectedRole === UserType.TruckingCompany) {
       this.registrationForm.get('truckingCompany')?.enable();
       this.registrationForm.get('terminal')?.disable();
-    } else if (this.selectedRole === 'terminal') {
+    } else if (this.selectedRole === UserType.Terminal) {
       this.registrationForm.get('terminal')?.enable();
       this.registrationForm.get('truckingCompany')?.disable();
     } else {
@@ -58,9 +64,29 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-    if (this.registrationForm.valid) {
-      console.log(this.registrationForm.value);
-      // Handle form submission here
+    if (this.registrationForm.invalid) {
+      return;
     }
+
+    this.isLoading = true;
+    const role = this.registrationForm.get('role')?.value;
+    let userData: TrCompanyFormData | TerminalFormData;
+
+    if (this.selectedRole === UserType.TruckingCompany) {
+      userData = this.registrationForm.get('truckingCompany')?.value;
+    } else {
+      userData = this.registrationForm.get('terminal')?.value;
+    }
+
+    this.authService.register(userData, role).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        console.log(response.message);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error;
+      },
+    });
   }
 }

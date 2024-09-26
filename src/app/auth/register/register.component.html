@@ -11,8 +11,8 @@
           class="form-control"
         >
           <option value="" disabled>Select role</option>
-          <option value="truckingCompany">Trucking Company</option>
-          <option value="terminal">Terminal</option>
+          <option [value]="userType.TruckingCompany">Trucking Company</option>
+          <option [value]="userType.Terminal">Terminal</option>
         </select>
         <div
           *ngIf="
@@ -27,28 +27,28 @@
 
       <!-- Trucking Company Form -->
       <div
-        *ngIf="selectedRole === 'truckingCompany'"
+        *ngIf="selectedRole === userType.TruckingCompany"
         formGroupName="truckingCompany"
       >
         <div class="form-group">
-          <label for="companyName">Trucking Company Name:</label>
+          <label for="trCompanyName">Trucking Company Name:</label>
           <input
-            id="companyName"
-            formControlName="companyName"
+            id="trCompanyName"
+            formControlName="trCompanyName"
             type="text"
             class="form-control"
           />
           <div
             *ngIf="
-              registrationForm.get('truckingCompany')?.get('companyName')
+              registrationForm.get('truckingCompany')?.get('trCompanyName')
                 ?.invalid &&
-              registrationForm.get('truckingCompany')?.get('companyName')
+              registrationForm.get('truckingCompany')?.get('trCompanyName')
                 ?.touched
             "
             class="error"
           >
             <small
-              *ngIf="registrationForm.get('truckingCompany')?.get('companyName')?.errors?.['required']"
+              *ngIf="registrationForm.get('truckingCompany')?.get('trCompanyName')?.errors?.['required']"
               >Company Name is required.</small
             >
           </div>
@@ -105,23 +105,22 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="gstNumber">GST Number:</label>
+          <label for="gstNo">GST Number:</label>
           <input
-            id="gstNumber"
-            formControlName="gstNumber"
+            id="gstNo"
+            formControlName="gstNo"
             type="text"
             class="form-control"
           />
           <div
             *ngIf="
-              registrationForm.get('truckingCompany')?.get('gstNumber')
-                ?.invalid &&
-              registrationForm.get('truckingCompany')?.get('gstNumber')?.touched
+              registrationForm.get('truckingCompany')?.get('gstNo')?.invalid &&
+              registrationForm.get('truckingCompany')?.get('gstNo')?.touched
             "
             class="error"
           >
             <small
-              *ngIf="registrationForm.get('truckingCompany')?.get('gstNumber')?.errors?.['required']"
+              *ngIf="registrationForm.get('truckingCompany')?.get('gstNo')?.errors?.['required']"
               >GST Number is required.</small
             >
           </div>
@@ -152,7 +151,7 @@
       </div>
 
       <!-- Terminal Form -->
-      <div *ngIf="selectedRole === 'terminal'" formGroupName="terminal">
+      <div *ngIf="selectedRole === userType.Terminal" formGroupName="terminal">
         <div class="form-group">
           <label for="portName">Port Name:</label>
           <input
@@ -312,11 +311,22 @@
 
       <button
         type="submit"
-        [disabled]="registrationForm.invalid"
+        [disabled]="registrationForm.invalid || isLoading"
         class="btn btn-primary"
       >
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+
         Register
       </button>
     </form>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+      {{ errorMessage }}
+    </div>
   </div>
 </div>

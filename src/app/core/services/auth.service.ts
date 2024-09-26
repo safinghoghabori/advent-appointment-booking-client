@@ -22,20 +22,20 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7189/api/auth'; // Change to your real API URL
+  private apiUrl = 'https://localhost:7189/api';
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(credentials: LoginReq, userType: UserType): Observable<LoginResp> {
     return this.http
-      .post<LoginResp>(`${this.apiUrl}?userType=${userType}`, credentials)
+      .post<LoginResp>(`${this.apiUrl}/auth?userType=${userType}`, credentials)
       .pipe(
-        catchError(this.handleError),
         tap((response: LoginResp) => {
           this.setToken(response.token);
           this.setUserData(response.data);
           this.router.navigate(['/dashboard']);
-        })
+        }),
+        catchError(this.handleError)
       );
   }
 
@@ -48,7 +48,13 @@ export class AuthService {
         `${this.apiUrl}/registration/${userType}`,
         userData
       )
-      .pipe(catchError(this.handleError));
+      .pipe(
+        tap((response: { message: string }) => {
+          this.router.navigate(['/login']);
+          return response.message;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   setToken(token: string) {
