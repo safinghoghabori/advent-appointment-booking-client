@@ -1,9 +1,5 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import {
@@ -17,6 +13,7 @@ import {
   TerminalFormData,
   TrCompanyFormData,
 } from '../../auth/register/models/register.model';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +21,18 @@ import {
 export class AuthService {
   private apiUrl = 'https://localhost:7189/api';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   login(credentials: LoginReq, userType: UserType): Observable<LoginResp> {
     return this.http
-      .post<LoginResp>(`${this.apiUrl}/auth?userType=${userType}`, credentials)
+      .post<LoginResp>(
+        `${this.apiUrl}/auth/login?userType=${userType}`,
+        credentials
+      )
       .pipe(
         tap((response: LoginResp) => {
           this.setUserType(userType);
@@ -59,34 +63,51 @@ export class AuthService {
   }
 
   setToken(token: string) {
-    localStorage.setItem('authToken', token);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('authToken', token);
+    }
   }
 
   getToken(): string | null {
-    return localStorage.getItem('authToken');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('authToken');
+    }
+    return null;
   }
 
   setUserData(userData: TerminalData | TrCompanyData): void {
-    localStorage.setItem('userData', JSON.stringify(userData));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('userData', JSON.stringify(userData));
+    }
   }
 
   getUserData(): TerminalData | TrCompanyData {
-    const userData = localStorage.getItem('userData');
-    return userData ? JSON.parse(userData) : [];
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = localStorage.getItem('userData');
+      return userData ? JSON.parse(userData) : [];
+    }
+    return {} as TerminalData | TrCompanyData;
   }
 
   setUserType(userType: UserType) {
-    localStorage.setItem('userType', userType);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('userType', userType);
+    }
   }
 
-  getUserType(): UserType {
-    const userType = localStorage.getItem('userType');
-    return userType as UserType;
+  getUserType(): UserType | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const userType = localStorage.getItem('userType');
+      return userType as UserType;
+    }
+    return null;
   }
 
   logout() {
-    localStorage.removeItem('authToken');
-    this.router.navigate(['/login']);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('authToken');
+      this.router.navigate(['/login']);
+    }
   }
 
   private handleError(error: HttpErrorResponse) {
