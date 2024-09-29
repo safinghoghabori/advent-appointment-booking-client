@@ -3,6 +3,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { CommonComponent } from './layout/common/common.component';
+import { DashboardComponent } from './features/dashboard/components/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -14,4 +15,5 @@ export const routes: Routes = [
       { path: 'register', component: RegisterComponent },
     ],
   },
+  { path: 'dashboard', component: DashboardComponent },
 ];
