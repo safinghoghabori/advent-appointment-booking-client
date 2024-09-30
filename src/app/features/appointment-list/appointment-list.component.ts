@@ -1,29 +1,24 @@
-import { Component } from '@angular/core';
-import { AppointmentService } from '../services/appointment.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { DriverService } from '../services/driver.service';
-import { Router } from '@angular/router';
-import { Appointment } from '../models/appointment.model';
-import { Driver } from '../models/driver.model';
 import { CommonModule } from '@angular/common';
-import {
-  TerminalData,
-  TrCompanyData,
-  UserType,
-} from '../../../auth/login/models/login.model';
+import { Component } from '@angular/core';
+import { Appointment } from '../dashboard/models/appointment.model';
+import { Driver } from '../dashboard/models/driver.model';
+import { AppointmentService } from '../dashboard/services/appointment.service';
+import { AuthService } from '../../core/services/auth.service';
+import { DriverService } from '../dashboard/services/driver.service';
+import { Router } from '@angular/router';
+import { TrCompanyResp, UserType } from '../../auth/login/models/login.model';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-appointment-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  templateUrl: './appointment-list.component.html',
+  styleUrl: './appointment-list.component.css',
 })
-export class DashboardComponent {
+export class AppointmentListComponent {
   appointments: Appointment[] = [];
   drivers: Driver[] = [];
-  userType: string | null = '';
-  userData: TrCompanyData | TerminalData | undefined;
+  userType: UserType | null = null;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -34,35 +29,28 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     this.userType = this.authService.getUserType();
-    this.userData = this.authService.getUserData();
-
-    this.loadAppointments();
-
-    if (this.userType === 'TruckingCompany') {
-      this.loadDrivers();
-    }
-  }
-
-  getUserName(): string {
-    return this.userType === UserType.Terminal
-      ? (this.userData as TerminalData).portName
-      : (this.userData as TrCompanyData).trCompanyName;
+    // this.userData = this.authService.getUserData();
+    // this.loadAppointments();
+    // if (this.userType === 'TruckingCompany') {
+    //   this.loadDrivers();
+    // }
   }
 
   loadAppointments() {
-    this.appointmentService.getAppointments().subscribe(
-      (data) => {
+    this.appointmentService.getAppointments().subscribe({
+      next: (data) => {
         this.appointments = data;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching appointments', error);
-      }
-    );
+      },
+    });
   }
 
   loadDrivers() {
-    const trCompanyId = localStorage.getItem('trCompanyId') || '123';
-    this.driverService.getAllDrivers(trCompanyId).subscribe({
+    const trCompanyData = this.authService.getUserData() as TrCompanyResp;
+
+    this.driverService.getDrivers(trCompanyData.trCompanyId).subscribe({
       next: (data) => {
         this.drivers = data;
       },
@@ -70,10 +58,6 @@ export class DashboardComponent {
         console.error('Error fetching drivers', error);
       },
     });
-  }
-
-  addNewAppointment() {
-    this.router.navigate(['/add-appointment']);
   }
 
   deleteAppointment(appointmentId: number) {
@@ -100,10 +84,5 @@ export class DashboardComponent {
         console.error('Error canceling appointment', error);
       },
     });
-  }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
   }
 }

@@ -1,0 +1,64 @@
+<div class="row table-responsive mt-3">
+  <div class="col-md-12">
+    <!-- <h5>Available Appointments</h5> -->
+    <table class="table table-bordered table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Id</th>
+          <th>Port</th>
+          <th>Trucking Company</th>
+          <th>GstNo</th>
+          <th>Transport Lic.</th>
+          <th>Driver</th>
+          <th>Move Type</th>
+          <th>Container Number</th>
+          <th>Line</th>
+          <th>Appointment Status</th>
+          <th>Appointment Created</th>
+          <th>Valid Through</th>
+          <th colspan="2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointment of appointments">
+          <td>{{ appointment.appointmentId }}</td>
+          <td>{{ appointment.portName }}</td>
+          <td>{{ appointment.trCompanyName }}</td>
+          <td>{{ appointment.gstNo }}</td>
+          <td>{{ appointment.transportLicNo }}</td>
+          <td>{{ appointment.driverName }}</td>
+          <td>{{ appointment.moveType }}</td>
+          <td>{{ appointment.containerNumber }}</td>
+          <td>{{ appointment.line }}</td>
+          <td>{{ appointment.appointmentStatus }}</td>
+          <td>{{ appointment.appointmentCreated }}</td>
+          <td>{{ appointment.appointmentValidThrough }}</td>
+          <td *ngIf="userType === 'TruckingCompany'">
+            <button
+              class="btn btn-warning"
+              (click)="updateAppointment(appointment.appointmentId)"
+            >
+              Update
+            </button>
+          </td>
+          <td *ngIf="userType === 'TruckingCompany'">
+            <button
+              class="btn btn-danger"
+              (click)="deleteAppointment(appointment.appointmentId)"
+            >
+              Delete
+            </button>
+          </td>
+          <td *ngIf="userType === 'Terminal'">
+            <button
+              class="btn btn-danger"
+              (click)="cancelAppointment(appointment.appointmentId)"
+            >
+              Cancel
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

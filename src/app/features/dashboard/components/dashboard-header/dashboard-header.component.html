@@ -1,0 +1,16 @@
+<header
+  class="d-flex justify-content-between align-items-center p-3 bg-primary text-white"
+>
+  <h3>Welcome, {{ getUserName() }}!</h3>
+  <div>
+    <button
+      *ngIf="userType === 'TruckingCompany'"
+      class="btn btn-light"
+      (click)="addNewAppointment()"
+    >
+      New Appointment
+    </button>
+    <button class="btn btn-danger" (click)="logout()">Logout</button>
+    <span class="profile-icon">Profile</span>
+  </div>
+</header>
