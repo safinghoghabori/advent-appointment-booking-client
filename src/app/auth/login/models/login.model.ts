@@ -9,23 +9,23 @@ export interface LoginReq {
 }
 
 export interface TerminalData {
-  PortName: string;
-  Email: string;
-  Address: string;
-  City: string;
-  State: string;
-  Country: string;
-  CreatedAt: Date;
-  UpdatedAt: Date;
+  portName: string;
+  email: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface TrCompanyData {
-  TrCompanyName: string;
-  Email: string;
-  TransportLicNo: string;
-  GstNo: string;
-  CreatedAt: Date;
-  UpdatedAt: Date;
+  trCompanyName: string;
+  email: string;
+  transportLicNo: string;
+  gstNo: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface LoginResp {

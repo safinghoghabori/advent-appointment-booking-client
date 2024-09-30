@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import {
   TerminalData,
   TrCompanyData,
+  UserType,
 } from '../../../auth/login/models/login.model';
 
 @Component({
@@ -22,7 +23,7 @@ export class DashboardComponent {
   appointments: Appointment[] = [];
   drivers: Driver[] = [];
   userType: string | null = '';
-  userData: TrCompanyData | TerminalData = {} as TrCompanyData;
+  userData: TrCompanyData | TerminalData | undefined;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -40,6 +41,12 @@ export class DashboardComponent {
     if (this.userType === 'TruckingCompany') {
       this.loadDrivers();
     }
+  }
+
+  getUserName(): string {
+    return this.userType === UserType.Terminal
+      ? (this.userData as TerminalData).portName
+      : (this.userData as TrCompanyData).trCompanyName;
   }
 
   loadAppointments() {
@@ -65,7 +72,7 @@ export class DashboardComponent {
     );
   }
 
-  onAddNewAppointment() {
+  addNewAppointment() {
     this.router.navigate(['/add-appointment']);
   }
 
