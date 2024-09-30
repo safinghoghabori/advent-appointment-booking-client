@@ -30,7 +30,7 @@ export class AppointmentListComponent {
   ngOnInit(): void {
     this.userType = this.authService.getUserType();
     // this.userData = this.authService.getUserData();
-    // this.loadAppointments();
+    this.loadAppointments();
     // if (this.userType === 'TruckingCompany') {
     //   this.loadDrivers();
     // }
