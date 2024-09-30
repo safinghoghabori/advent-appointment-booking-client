@@ -62,14 +62,14 @@ export class DashboardComponent {
 
   loadDrivers() {
     const trCompanyId = localStorage.getItem('trCompanyId') || '123';
-    this.driverService.getAllDrivers(trCompanyId).subscribe(
-      (data) => {
+    this.driverService.getAllDrivers(trCompanyId).subscribe({
+      next: (data) => {
         this.drivers = data;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching drivers', error);
-      }
-    );
+      },
+    });
   }
 
   addNewAppointment() {
@@ -77,14 +77,14 @@ export class DashboardComponent {
   }
 
   deleteAppointment(appointmentId: number) {
-    this.appointmentService.deleteAppointment(appointmentId).subscribe(
-      (response) => {
+    this.appointmentService.deleteAppointment(appointmentId).subscribe({
+      next: (response) => {
         this.loadAppointments();
       },
-      (error) => {
+      error: (error) => {
         console.error('Error deleting appointment', error);
-      }
-    );
+      },
+    });
   }
 
   updateAppointment(appointmentId: number) {
@@ -92,14 +92,14 @@ export class DashboardComponent {
   }
 
   cancelAppointment(appointmentId: number) {
-    this.appointmentService.cancelAppointment(appointmentId).subscribe(
-      (response) => {
+    this.appointmentService.cancelAppointment(appointmentId).subscribe({
+      next: (response) => {
         this.loadAppointments();
       },
-      (error) => {
+      error: (error) => {
         console.error('Error canceling appointment', error);
-      }
-    );
+      },
+    });
   }
 
   logout() {
