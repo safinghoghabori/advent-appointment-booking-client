@@ -3,7 +3,9 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { CommonComponent } from './layout/common/common.component';
-import { DashboardComponent } from './features/dashboard/components/dashboard.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { NewAppointmentComponent } from './features/new-appointment/new-appointment.component';
+import { AppointmentListComponent } from './features/appointment-list/appointment-list.component';
 
 export const routes: Routes = [
   {
@@ -15,5 +17,12 @@ export const routes: Routes = [
       { path: 'register', component: RegisterComponent },
     ],
   },
-  { path: 'dashboard', component: DashboardComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', component: AppointmentListComponent },
+      { path: 'new-appointment', component: NewAppointmentComponent },
+    ],
+  },
 ];

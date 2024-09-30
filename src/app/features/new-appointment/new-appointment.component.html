@@ -1,0 +1,158 @@
+<div class="appointment-form">
+  <!-- Step 1: Terminal and Driver Selection -->
+  <div *ngIf="step === 1">
+    <h2>Step 1: Select Terminal and Driver</h2>
+    <form [formGroup]="appointmentForm">
+      <div class="form-group">
+        <label for="terminal">Select a terminal:</label>
+        <select formControlName="terminalId" class="form-control">
+          <option value="" disabled>Select Terminal</option>
+          <option
+            *ngFor="let terminal of terminals"
+            [value]="terminal.terminalId"
+          >
+            {{ terminal.portName }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('terminalId')?.invalid &&
+            appointmentForm.get('terminalId')?.touched
+          "
+          class="text-danger"
+        >
+          Terminal is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="driver">Select a driver:</label>
+        <select formControlName="driverId" class="form-control">
+          <option value="" disabled>Select Driver</option>
+          <option *ngFor="let driver of drivers" [value]="driver.driverId">
+            {{ driver.driverName }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('driverId')?.invalid &&
+            appointmentForm.get('driverId')?.touched
+          "
+          class="text-danger"
+        >
+          Driver is required.
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" (click)="goToStep(2)">
+        Next
+      </button>
+    </form>
+  </div>
+
+  <!-- Step 2: Container and Details -->
+  <div *ngIf="step === 2">
+    <h2>Step 2: Container Details</h2>
+    <form [formGroup]="appointmentForm">
+      <div class="form-group">
+        <label for="containerNumber">Container Number</label>
+        <input
+          formControlName="containerNumber"
+          type="text"
+          class="form-control"
+        />
+        <div
+          *ngIf="
+            appointmentForm.get('containerNumber')?.invalid &&
+            appointmentForm.get('containerNumber')?.touched
+          "
+          class="text-danger"
+        >
+          Container Number is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="moveType">Move Type</label>
+        <input formControlName="moveType" type="text" class="form-control" />
+        <div
+          *ngIf="
+            appointmentForm.get('moveType')?.invalid &&
+            appointmentForm.get('moveType')?.touched
+          "
+          class="text-danger"
+        >
+          Move Type is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="sizeType">Container Size</label>
+        <input formControlName="sizeType" type="text" class="form-control" />
+        <div
+          *ngIf="
+            appointmentForm.get('sizeType')?.invalid &&
+            appointmentForm.get('sizeType')?.touched
+          "
+          class="text-danger"
+        >
+          Container Size is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="line">Line</label>
+        <input formControlName="line" type="text" class="form-control" />
+        <div
+          *ngIf="
+            appointmentForm.get('line')?.invalid &&
+            appointmentForm.get('line')?.touched
+          "
+          class="text-danger"
+        >
+          Line is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="needChassis">Need Chassis</label>
+        <div class="custom-control custom-switch">
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="needChassis"
+            formControlName="needChassis"
+          />
+          <label class="custom-control-label" for="needChassis">Yes/No</label>
+        </div>
+      </div>
+
+      <!-- Chassis Number Field - Conditionally displayed -->
+      <div class="form-group" *ngIf="showChassisNumberField">
+        <label for="chassisNumber">Chassis Number</label>
+        <input
+          type="text"
+          id="chassisNumber"
+          class="form-control"
+          formControlName="chassisNumber"
+        />
+        <div
+          *ngIf="
+            appointmentForm.get('chassisNumber')?.invalid &&
+            appointmentForm.get('chassisNumber')?.touched
+          "
+          class="text-danger"
+        >
+          Chassis Number is required.
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-secondary" (click)="goToStep(1)">
+        Back
+      </button>
+      <button type="submit" class="btn btn-success" (click)="submitForm()">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

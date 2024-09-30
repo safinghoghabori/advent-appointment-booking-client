@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { Terminal } from '../models/terminal.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,11 +22,30 @@ export class AppointmentService {
     });
   }
 
+  createAppointment(appointment: Appointment): Observable<Appointment> {
+    return this.http.post<Appointment>(`${this.apiUrl}/create`, appointment, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
+  }
+
   deleteAppointment(appointmentId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${appointmentId}`);
+    return this.http.delete(`${this.apiUrl}/${appointmentId}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
   }
 
   cancelAppointment(appointmentId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cancel/${appointmentId}`, {});
+    return this.http.post(`${this.apiUrl}/cancel/${appointmentId}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
   }
 }
