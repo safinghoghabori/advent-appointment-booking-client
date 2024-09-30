@@ -28,7 +28,15 @@ export interface TrCompanyData {
   updatedAt: Date;
 }
 
+export interface TerminalResp extends TerminalData {
+  terminalId: number;
+}
+
+export interface TrCompanyResp extends TrCompanyData {
+  trCompanyId: number;
+}
+
 export interface LoginResp {
   token: string;
-  data: TerminalData | TrCompanyData;
+  data: TerminalResp | TrCompanyResp;
 }
