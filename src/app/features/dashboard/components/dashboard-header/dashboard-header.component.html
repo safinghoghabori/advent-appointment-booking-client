@@ -1,7 +1,11 @@
 <header
   class="d-flex justify-content-between align-items-center p-3 bg-primary text-white"
 >
-  <h3>Welcome, {{ getUserName() }}!</h3>
+  <h3>
+    <a class="navbar-brand" routerLink="/dashboard"
+      >Welcome, {{ getUserName() }}!</a
+    >
+  </h3>
   <div>
     <button
       *ngIf="userType === 'TruckingCompany'"
