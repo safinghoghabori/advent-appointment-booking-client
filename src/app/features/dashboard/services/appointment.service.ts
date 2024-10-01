@@ -22,6 +22,15 @@ export class AppointmentService {
     });
   }
 
+  getAppointmentById(id: string): Observable<Appointment> {
+    return this.http.get<Appointment>(`${this.apiUrl}/get/${id}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
+  }
+
   createAppointment(appointment: Appointment): Observable<Appointment> {
     return this.http.post<Appointment>(`${this.apiUrl}/create`, appointment, {
       headers: new HttpHeaders({

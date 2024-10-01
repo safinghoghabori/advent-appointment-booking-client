@@ -55,7 +55,7 @@ export class AppointmentListComponent {
   }
 
   updateAppointment(appointmentId: number) {
-    this.router.navigate(['/update-appointment', appointmentId]);
+    this.router.navigate(['dashboard/update-appointment', appointmentId]);
   }
 
   cancelAppointment(appointmentId: number) {

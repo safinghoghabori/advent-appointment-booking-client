@@ -14,6 +14,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
 import { CommonModule } from '@angular/common';
 import { TerminalService } from '../dashboard/services/terminal.service';
+import { Appointment } from '../dashboard/models/appointment.model';
 
 @Component({
   selector: 'app-new-appointment',
@@ -39,7 +40,8 @@ export class NewAppointmentComponent {
     private driverService: DriverService,
     private authService: AuthService,
     private terminalService: TerminalService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.appointmentForm = this.fb.group({
       terminalId: ['', Validators.required],
@@ -58,11 +60,20 @@ export class NewAppointmentComponent {
     this.loadTerminals();
     this.loadDrivers();
 
-    // this.appointmentId = this.route.snapshot.paramMap.get('id');
-    // if (this.appointmentId) {
-    //   this.isEditMode = true;
-    //   this.loadAppointmentData(this.appointmentId);
-    // }
+    this.appointmentId = this.route.snapshot.paramMap.get('id');
+    if (this.appointmentId) {
+      this.isEditMode = true;
+      this.loadAppointmentData(this.appointmentId);
+    }
+  }
+
+  loadAppointmentData(id: string) {
+    this.appointmentService.getAppointmentById(id).subscribe({
+      next: (appointment: Appointment) => {
+        this.appointmentForm.patchValue(appointment);
+      },
+      error: (error) => console.error('Failed to load appointment data', error),
+    });
   }
 
   // Toggle the chassis number field validation and visibility

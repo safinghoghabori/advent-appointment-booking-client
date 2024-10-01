@@ -26,6 +26,10 @@ export const routes: Routes = [
       { path: '', component: AppointmentListComponent },
       { path: 'new-appointment', component: NewAppointmentComponent },
       {
+        path: 'update-appointment/:id',
+        component: NewAppointmentComponent,
+      },
+      {
         path: 'drivers',
         component: DriverListComponent,
         // children: [{ path: 'add', component: AddUpdateDriverComponent }],
