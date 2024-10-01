@@ -29,11 +29,7 @@ export class AppointmentListComponent {
 
   ngOnInit(): void {
     this.userType = this.authService.getUserType();
-    // this.userData = this.authService.getUserData();
     this.loadAppointments();
-    // if (this.userType === 'TruckingCompany') {
-    //   this.loadDrivers();
-    // }
   }
 
   loadAppointments() {
@@ -43,19 +39,6 @@ export class AppointmentListComponent {
       },
       error: (error) => {
         console.error('Error fetching appointments', error);
-      },
-    });
-  }
-
-  loadDrivers() {
-    const trCompanyData = this.authService.getUserData() as TrCompanyResp;
-
-    this.driverService.getDrivers(trCompanyData.trCompanyId).subscribe({
-      next: (data) => {
-        this.drivers = data;
-      },
-      error: (error) => {
-        console.error('Error fetching drivers', error);
       },
     });
   }
