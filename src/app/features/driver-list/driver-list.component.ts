@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Driver } from '../dashboard/models/driver.model';
 import { DriverService } from '../dashboard/services/driver.service';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-driver-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './driver-list.component.html',
   styleUrl: './driver-list.component.css',
 })
@@ -37,5 +37,13 @@ export class DriverListComponent {
         console.error('Error fetching drivers', error);
       },
     });
+  }
+
+  addDriver(): void {
+    this.router.navigate(['dashboard/drivers/add']);
+  }
+
+  updateDriver(id: number): void {
+    this.router.navigate([`/dashboard/drivers/update/${id}`]);
   }
 }

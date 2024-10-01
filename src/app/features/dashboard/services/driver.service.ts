@@ -23,4 +23,31 @@ export class DriverService {
       }
     );
   }
+
+  getDriverById(id: number): Observable<Driver> {
+    return this.http.get<Driver>(`${this.apiUrl}/${id}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
+  }
+
+  addDriver(driver: Driver): Observable<Driver> {
+    return this.http.post<Driver>(this.apiUrl, driver, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
+  }
+
+  updateDriver(id: number, driver: Driver): Observable<Driver> {
+    return this.http.put<Driver>(`${this.apiUrl}/${id}`, driver, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
+  }
 }

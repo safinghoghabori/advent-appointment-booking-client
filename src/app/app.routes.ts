@@ -7,6 +7,7 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { NewAppointmentComponent } from './features/new-appointment/new-appointment.component';
 import { AppointmentListComponent } from './features/appointment-list/appointment-list.component';
 import { DriverListComponent } from './features/driver-list/driver-list.component';
+import { AddUpdateDriverComponent } from './features/add-update-driver/add-update-driver.component';
 
 export const routes: Routes = [
   {
@@ -24,7 +25,13 @@ export const routes: Routes = [
     children: [
       { path: '', component: AppointmentListComponent },
       { path: 'new-appointment', component: NewAppointmentComponent },
-      { path: 'drivers', component: DriverListComponent },
+      {
+        path: 'drivers',
+        component: DriverListComponent,
+        // children: [{ path: 'add', component: AddUpdateDriverComponent }],
+      },
+      { path: 'drivers/add', component: AddUpdateDriverComponent },
+      { path: 'drivers/update/:id', component: AddUpdateDriverComponent },
     ],
   },
 ];
