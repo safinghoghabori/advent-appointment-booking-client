@@ -21,7 +21,12 @@
           >
             Update
           </button>
-          <button class="btn btn-danger">Delete</button>
+          <button
+            class="btn btn-danger"
+            (click)="deleteDriver(driver.driverId)"
+          >
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>

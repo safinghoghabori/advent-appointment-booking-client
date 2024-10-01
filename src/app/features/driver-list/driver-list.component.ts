@@ -46,4 +46,12 @@ export class DriverListComponent {
   updateDriver(id: number): void {
     this.router.navigate([`/dashboard/drivers/update/${id}`]);
   }
+
+  deleteDriver(id: number): void {
+    if (confirm('Are you sure you want to delete this driver?')) {
+      this.driverService.deleteDriver(id).subscribe(() => {
+        this.loadDrivers(); // Reload the list after deletion
+      });
+    }
+  }
 }

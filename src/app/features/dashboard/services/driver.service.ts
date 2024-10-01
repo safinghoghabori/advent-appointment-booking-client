@@ -50,4 +50,13 @@ export class DriverService {
       }),
     });
   }
+
+  deleteDriver(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
+  }
 }
