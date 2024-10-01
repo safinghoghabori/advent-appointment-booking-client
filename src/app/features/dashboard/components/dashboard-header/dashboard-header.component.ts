@@ -36,6 +36,10 @@ export class DashboardHeaderComponent {
     this.router.navigate(['dashboard/new-appointment']);
   }
 
+  onDriversClick() {
+    this.router.navigate(['dashboard/drivers']);
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

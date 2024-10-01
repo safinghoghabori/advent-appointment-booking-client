@@ -1,0 +1,24 @@
+<div class="container mt-4">
+  <button class="btn btn-primary mb-3">Add Driver</button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Driver Name</th>
+        <th>Plate Number</th>
+        <th>Phone Number</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let driver of drivers">
+        <td>{{ driver.driverName }}</td>
+        <td>{{ driver.plateNo }}</td>
+        <td>{{ driver.phoneNumber }}</td>
+        <td>
+          <button class="btn btn-warning">Update</button>
+          <button class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

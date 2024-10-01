@@ -8,6 +8,13 @@
     <button
       *ngIf="userType === 'TruckingCompany'"
       class="btn btn-light"
+      (click)="onDriversClick()"
+    >
+      Drivers
+    </button>
+    <button
+      *ngIf="userType === 'TruckingCompany'"
+      class="btn btn-light"
       (click)="addNewAppointment()"
     >
       New Appointment
