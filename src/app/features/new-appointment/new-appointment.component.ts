@@ -8,7 +8,7 @@ import {
 import { Terminal } from '../dashboard/models/terminal.model';
 import { Driver } from '../dashboard/models/driver.model';
 import { AppointmentService } from '../dashboard/services/appointment.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DriverService } from '../dashboard/services/driver.service';
 import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
@@ -18,7 +18,7 @@ import { TerminalService } from '../dashboard/services/terminal.service';
 @Component({
   selector: 'app-new-appointment',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './new-appointment.component.html',
   styleUrl: './new-appointment.component.css',
 })

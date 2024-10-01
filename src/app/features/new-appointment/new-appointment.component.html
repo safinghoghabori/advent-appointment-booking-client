@@ -7,6 +7,9 @@
         <label for="terminal">Select a terminal:</label>
         <select formControlName="terminalId" class="form-control">
           <option value="" disabled>Select Terminal</option>
+          <option *ngIf="terminals.length === 0">
+            <a routerLink="dashboard/drivers">Add new driver</a>
+          </option>
           <option
             *ngFor="let terminal of terminals"
             [value]="terminal.terminalId"

@@ -1,5 +1,11 @@
 <div class="container mt-4">
   <button class="btn btn-primary mb-3" (click)="addDriver()">Add Driver</button>
+
+  @if (drivers.length === 0) {
+  <div class="alert alert-info" role="alert">
+    No drivers available! Click on <b>Add driver</b> to add new drivers.
+  </div>
+  } @else {
   <table class="table table-striped">
     <thead>
       <tr>
@@ -31,4 +37,5 @@
       </tr>
     </tbody>
   </table>
+  }
 </div>

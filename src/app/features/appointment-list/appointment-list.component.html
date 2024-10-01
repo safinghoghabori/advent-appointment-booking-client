@@ -1,6 +1,11 @@
 <div class="row table-responsive mt-3">
   <div class="col-md-12">
-    <!-- <h5>Available Appointments</h5> -->
+    @if (appointments.length === 0) {
+    <div class="container alert alert-info" role="alert">
+      You do not have any upcoming appointments. Click on
+      <b>New Appointment</b> to schedule an appointment!
+    </div>
+    } @else {
     <table class="table table-bordered table-hover table-striped">
       <thead class="table-dark">
         <tr>
@@ -64,5 +69,6 @@
         </tr>
       </tbody>
     </table>
+    }
   </div>
 </div>
