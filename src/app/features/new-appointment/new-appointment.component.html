@@ -7,9 +7,6 @@
         <label for="terminal">Select a terminal:</label>
         <select formControlName="terminalId" class="form-control">
           <option value="" disabled>Select Terminal</option>
-          <option *ngIf="terminals.length === 0">
-            <a routerLink="dashboard/drivers">Add new driver</a>
-          </option>
           <option
             *ngFor="let terminal of terminals"
             [value]="terminal.terminalId"
@@ -45,6 +42,15 @@
         >
           Driver is required.
         </div>
+      </div>
+
+      <!-- Conditional "Add Driver" Link -->
+      <div *ngIf="drivers.length === 0">
+        <p>
+          No drivers available.
+          <a [routerLink]="['/dashboard/drivers/add']">Add a new driver</a>
+          before proceeding.
+        </p>
       </div>
 
       <button type="button" class="btn btn-primary" (click)="goToStep(2)">
@@ -125,6 +131,7 @@
             class="custom-control-input"
             id="needChassis"
             formControlName="needChassis"
+            (change)="toggleChassisField($event)"
           />
           <label class="custom-control-label" for="needChassis">Yes/No</label>
         </div>
@@ -132,17 +139,17 @@
 
       <!-- Chassis Number Field - Conditionally displayed -->
       <div class="form-group" *ngIf="showChassisNumberField">
-        <label for="chassisNumber">Chassis Number</label>
+        <label for="chassisNo">Chassis Number</label>
         <input
           type="text"
-          id="chassisNumber"
+          id="chassisNo"
           class="form-control"
-          formControlName="chassisNumber"
+          formControlName="chassisNo"
         />
         <div
           *ngIf="
-            appointmentForm.get('chassisNumber')?.invalid &&
-            appointmentForm.get('chassisNumber')?.touched
+            appointmentForm.get('chassisNo')?.invalid &&
+            appointmentForm.get('chassisNo')?.touched
           "
           class="text-danger"
         >
@@ -157,5 +164,9 @@
         Submit
       </button>
     </form>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+      {{ errorMessage }}
+    </div>
   </div>
 </div>

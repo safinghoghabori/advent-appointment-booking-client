@@ -31,6 +31,7 @@ export class NewAppointmentComponent {
   isEditMode: boolean = false;
   showChassisNumberField: boolean = false;
   trCompanyData: TrCompanyResp | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -50,13 +51,6 @@ export class NewAppointmentComponent {
       needChassis: [false],
       chassisNo: [''],
     });
-
-    // Listen to changes in the toggle switch for chassis
-    this.appointmentForm
-      .get('needChassis')
-      ?.valueChanges.subscribe((needChassis) => {
-        this.toggleChassisField(needChassis);
-      });
   }
 
   ngOnInit(): void {
@@ -72,10 +66,14 @@ export class NewAppointmentComponent {
   }
 
   // Toggle the chassis number field validation and visibility
-  private toggleChassisField(needChassis: boolean) {
-    const chassisControl = this.appointmentForm.get('chassisNumber');
+  toggleChassisField(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const isChecked = inputElement.checked;
+    console.log('isChecked...', isChecked);
 
-    if (needChassis) {
+    const chassisControl = this.appointmentForm.get('chassisNo');
+
+    if (isChecked) {
       chassisControl?.setValidators([Validators.required]); // Add validation if chassis is needed
       this.showChassisNumberField = true;
     } else {
@@ -137,12 +135,15 @@ export class NewAppointmentComponent {
         ...this.appointmentForm.value,
         trCompanyId: this.trCompanyData?.trCompanyId,
       };
+
       this.appointmentService.createAppointment(formData).subscribe({
         next: (response) => {
           console.log('Appointment created successfully', response);
           this.router.navigate(['/dashboard']);
         },
-        error: (error) => console.error('Failed to create appointment', error),
+        error: (error) => {
+          this.errorMessage = error.error.message;
+        },
       });
     }
   }
