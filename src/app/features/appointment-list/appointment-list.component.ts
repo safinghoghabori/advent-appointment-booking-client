@@ -7,7 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { DriverService } from '../dashboard/services/driver.service';
 import { Router } from '@angular/router';
 import { UserType } from '../../auth/login/models/login.model';
-import { AppointmentStatus } from '../../core/services/constants';
+import { AppointmentStatus } from '../../core/constants/constants';
 
 @Component({
   selector: 'app-appointment-list',

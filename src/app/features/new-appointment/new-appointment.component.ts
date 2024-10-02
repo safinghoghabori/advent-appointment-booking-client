@@ -15,6 +15,7 @@ import { TrCompanyResp } from '../../auth/login/models/login.model';
 import { CommonModule } from '@angular/common';
 import { TerminalService } from '../dashboard/services/terminal.service';
 import { Appointment } from '../dashboard/models/appointment.model';
+import { MOVE_TYPES, SIZE_TYPES } from '../../core/constants/constants';
 
 @Component({
   selector: 'app-new-appointment',
@@ -33,6 +34,8 @@ export class NewAppointmentComponent {
   showChassisNumberField: boolean = false;
   trCompanyData: TrCompanyResp | null = null;
   errorMessage: string | null = null;
+  moveTypes = MOVE_TYPES;
+  sizeTypes = SIZE_TYPES;
 
   constructor(
     private fb: FormBuilder,
