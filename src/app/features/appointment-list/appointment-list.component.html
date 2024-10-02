@@ -20,7 +20,6 @@
         <th>Container Number</th>
         <th>Line</th>
         <th>Appointment Status</th>
-        <th>Appointment Created</th>
         <th>Valid Through</th>
         <th colspan="2">Actions</th>
       </tr>
@@ -53,8 +52,7 @@
         >
           {{ appointment.appointmentStatus }}
         </td>
-        <td>{{ appointment.appointmentCreated }}</td>
-        <td>{{ appointment.appointmentValidThrough }}</td>
+        <td>{{ appointment.appointmentDate }} , {{ appointment.timeSlot }}</td>
         <!-- <td
           *ngIf="
             userType === 'TruckingCompany' &&

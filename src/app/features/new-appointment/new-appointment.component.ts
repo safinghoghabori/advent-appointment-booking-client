@@ -36,6 +36,7 @@ export class NewAppointmentComponent {
   errorMessage: string | null = null;
   moveTypes = MOVE_TYPES;
   sizeTypes = SIZE_TYPES;
+  availableTimeSlots: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -58,6 +59,8 @@ export class NewAppointmentComponent {
       line: ['', Validators.required],
       needChassis: [false],
       chassisNo: [''],
+      appointmentDate: ['', Validators.required],
+      timeSlot: ['', Validators.required],
     });
   }
 
@@ -129,6 +132,8 @@ export class NewAppointmentComponent {
       this.step = stepNumber;
     } else if (this.step === 2) {
       this.step = stepNumber;
+    } else if (this.step === 3) {
+      this.step = stepNumber;
     }
   }
 
@@ -157,5 +162,23 @@ export class NewAppointmentComponent {
         },
       });
     }
+
+    this.errorMessage = 'Please fill all required fields.';
+  }
+
+  onDateChange(event: any) {
+    const selectedDate = event.target.value;
+    const trCompanyId = this.trCompanyData?.trCompanyId;
+
+    this.appointmentService
+      .getAvailableTimeSlots(trCompanyId!, selectedDate)
+      .subscribe({
+        next: (slots) => {
+          this.availableTimeSlots = slots;
+        },
+        error: (error) => {
+          console.error('Error fetching time slots', error);
+        },
+      });
   }
 }

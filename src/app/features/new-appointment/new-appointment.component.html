@@ -1,12 +1,12 @@
 <div class="appointment-form card shadow-lg p-4">
   <!-- Step 1: Terminal and Driver Selection -->
   <div *ngIf="step === 1">
-    <h4 class="mb-4">Step 1: Select Terminal and Driver</h4>
+    <h4 class="mb-4">Step 1: Add required data</h4>
     <form [formGroup]="appointmentForm">
       <div class="form-group mb-3">
-        <label for="terminal" class="form-label">Select a Terminal</label>
+        <label for="terminal" class="form-label">Select Terminal</label>
         <select formControlName="terminalId" class="form-select">
-          <option value="" disabled>Select Terminal</option>
+          <option value="" disabled>Select</option>
           <option
             *ngFor="let terminal of terminals"
             [value]="terminal.terminalId"
@@ -28,7 +28,7 @@
       <div class="form-group mb-3">
         <label for="driver" class="form-label">Select a Driver</label>
         <select formControlName="driverId" class="form-select">
-          <option value="" disabled>Select Driver</option>
+          <option value="" disabled>Select</option>
           <option *ngFor="let driver of drivers" [value]="driver.driverId">
             {{ driver.driverName }}
           </option>
@@ -65,7 +65,7 @@
 
   <!-- Step 2: Container and Details -->
   <div *ngIf="step === 2">
-    <h4 class="mb-4">Step 2: Container details</h4>
+    <h4 class="mb-4">Step 2: Add move details</h4>
     <form [formGroup]="appointmentForm">
       <div class="form-group mb-3">
         <label for="containerNumber" class="form-label">Container Number</label>
@@ -96,9 +96,23 @@
       </div>
 
       <div class="form-group mb-3">
+        <label for="line" class="form-label">Line</label>
+        <input formControlName="line" type="text" class="form-control" />
+        <div
+          *ngIf="
+            appointmentForm.get('line')?.invalid &&
+            appointmentForm.get('line')?.touched
+          "
+          class="text-danger"
+        >
+          Line is required.
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
         <label for="moveType" class="form-label">Move Type</label>
         <select formControlName="moveType" class="form-select">
-          <option value="" disabled>Select Move Type</option>
+          <option value="" disabled>Select</option>
           <option *ngFor="let move of moveTypes" [value]="move.value">
             {{ move.label }}
           </option>
@@ -117,7 +131,7 @@
       <div class="form-group mb-3">
         <label for="sizeType" class="form-label">Container Size</label>
         <select formControlName="sizeType" class="form-select">
-          <option value="" disabled>Select Size Type</option>
+          <option value="" disabled>Select</option>
           <option *ngFor="let size of sizeTypes" [value]="size.value">
             {{ size.label }}
           </option>
@@ -130,20 +144,6 @@
           class="text-danger"
         >
           Container Size is required.
-        </div>
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="line" class="form-label">Line</label>
-        <input formControlName="line" type="text" class="form-control" />
-        <div
-          *ngIf="
-            appointmentForm.get('line')?.invalid &&
-            appointmentForm.get('line')?.touched
-          "
-          class="text-danger"
-        >
-          Line is required.
         </div>
       </div>
 
@@ -185,6 +185,59 @@
 
       <div class="d-flex justify-content-between mt-4">
         <button type="button" class="btn btn-secondary" (click)="goToStep(1)">
+          Back
+        </button>
+        <button type="button" class="btn btn-primary" (click)="goToStep(3)">
+          Next
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Step 3: Select date and time slot -->
+  <div *ngIf="step === 3">
+    <h4 class="mb-4">Step 3: Choose appointment time</h4>
+    <form [formGroup]="appointmentForm">
+      <div class="form-group mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input
+          formControlName="appointmentDate"
+          type="date"
+          class="form-control"
+          (change)="onDateChange($event)"
+        />
+        <div
+          *ngIf="
+            appointmentForm.get('appointmentDate')?.invalid &&
+            appointmentForm.get('appointmentDate')?.touched
+          "
+          class="text-danger"
+        >
+          Date is required.
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="driver" class="form-label">Time slot</label>
+        <select formControlName="timeSlot" class="form-select">
+          <option value="" disabled>Select time slot</option>
+          <option *ngFor="let slot of availableTimeSlots" [value]="slot">
+            {{ slot }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('timeSlot')?.invalid &&
+            appointmentForm.get('timeSlot')?.touched
+          "
+          class="text-danger"
+        >
+          Time slot is required.
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" (click)="goToStep(2)">
           Back
         </button>
         <button type="submit" class="btn btn-success" (click)="submitForm()">

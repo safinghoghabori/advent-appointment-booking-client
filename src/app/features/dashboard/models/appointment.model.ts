@@ -17,6 +17,8 @@ export interface Appointment {
   sizeType: string;
   line: string;
   chassisNo: string;
+  appointmentDate: Date;
+  timeSlot: string;
   appointmentStatus: string;
   appointmentCreated: Date;
   appointmentValidThrough: Date;

@@ -41,7 +41,7 @@ export class AppointmentService {
   }
 
   deleteAppointment(appointmentId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${appointmentId}`, {
+    return this.http.delete(`${this.apiUrl}/delete/${appointmentId}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.authService.getToken()}`,
@@ -65,5 +65,20 @@ export class AppointmentService {
         Authorization: `Bearer ${this.authService.getToken()}`,
       }),
     });
+  }
+
+  getAvailableTimeSlots(
+    trCompanyId: number,
+    date: string
+  ): Observable<string[]> {
+    return this.http.get<string[]>(
+      `${this.apiUrl}/available-timeslots/${date}?trCompanyId=${trCompanyId}`,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.authService.getToken()}`,
+        }),
+      }
+    );
   }
 }
