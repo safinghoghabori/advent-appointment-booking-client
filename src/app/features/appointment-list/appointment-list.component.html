@@ -55,7 +55,7 @@
         </td>
         <td>{{ appointment.appointmentCreated }}</td>
         <td>{{ appointment.appointmentValidThrough }}</td>
-        <td
+        <!-- <td
           *ngIf="
             userType === 'TruckingCompany' &&
             appointment.appointmentStatus !== appointmentStatus.Canceled
@@ -67,7 +67,7 @@
           >
             Update
           </button>
-        </td>
+        </td> -->
         <td *ngIf="userType === 'TruckingCompany'">
           <button
             class="btn btn-danger"
