@@ -32,14 +32,6 @@ export class DashboardHeaderComponent {
       : (this.userData as TrCompanyResp).trCompanyName;
   }
 
-  addNewAppointment() {
-    this.router.navigate(['dashboard/new-appointment']);
-  }
-
-  onDriversClick() {
-    this.router.navigate(['dashboard/drivers']);
-  }
-
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

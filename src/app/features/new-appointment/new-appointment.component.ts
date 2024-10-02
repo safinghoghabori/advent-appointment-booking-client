@@ -110,12 +110,6 @@ export class NewAppointmentComponent {
       },
       error: (error) => {
         console.error('Failed to load drivers', error);
-
-        // Handle case when no drivers available
-        if (!this.drivers || this.drivers.length === 0) {
-          alert('No drivers available. Please add a driver first.');
-          this.router.navigate(['/add-driver']);
-        }
       },
     });
   }

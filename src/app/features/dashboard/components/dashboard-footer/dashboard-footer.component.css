@@ -1,6 +1,9 @@
 footer {
   text-align: center;
-  margin-top: 20px;
   padding: 10px;
-  border-top: 1px solid #dee2e6;
+}
+
+p,
+ul {
+  margin: 0;
 }

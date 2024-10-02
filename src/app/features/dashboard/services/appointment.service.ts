@@ -50,7 +50,16 @@ export class AppointmentService {
   }
 
   cancelAppointment(appointmentId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cancel/${appointmentId}`, {
+    return this.http.put(`${this.apiUrl}/cancel/${appointmentId}`, null, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      }),
+    });
+  }
+
+  approveAppointment(appointmentId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/approve/${appointmentId}`, null, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.authService.getToken()}`,

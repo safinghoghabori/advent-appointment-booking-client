@@ -6,7 +6,8 @@ import { AppointmentService } from '../dashboard/services/appointment.service';
 import { AuthService } from '../../core/services/auth.service';
 import { DriverService } from '../dashboard/services/driver.service';
 import { Router } from '@angular/router';
-import { TrCompanyResp, UserType } from '../../auth/login/models/login.model';
+import { UserType } from '../../auth/login/models/login.model';
+import { AppointmentStatus } from '../../core/services/constants';
 
 @Component({
   selector: 'app-appointment-list',
@@ -19,6 +20,7 @@ export class AppointmentListComponent {
   appointments: Appointment[] = [];
   drivers: Driver[] = [];
   userType: UserType | null = null;
+  appointmentStatus = AppointmentStatus;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -60,6 +62,17 @@ export class AppointmentListComponent {
 
   cancelAppointment(appointmentId: number) {
     this.appointmentService.cancelAppointment(appointmentId).subscribe({
+      next: (response) => {
+        this.loadAppointments();
+      },
+      error: (error) => {
+        console.error('Error canceling appointment', error);
+      },
+    });
+  }
+
+  approveAppointment(appointmentId: number) {
+    this.appointmentService.approveAppointment(appointmentId).subscribe({
       next: (response) => {
         this.loadAppointments();
       },
