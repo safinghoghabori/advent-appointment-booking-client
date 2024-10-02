@@ -11,6 +11,7 @@
       <tr>
         <th>Id</th>
         <th>Port</th>
+        <th>Terminal</th>
         <th *ngIf="userType === 'Terminal'">Trucking Company</th>
         <th *ngIf="userType === 'Terminal'">GstNo</th>
         <th *ngIf="userType === 'Terminal'">Transport Lic.</th>
@@ -28,6 +29,7 @@
       <tr *ngFor="let appointment of appointments">
         <td>{{ appointment.appointmentId }}</td>
         <td>{{ appointment.portName }}</td>
+        <td>{{ appointment.terminalName }}</td>
         <td *ngIf="userType === 'Terminal'">
           {{ appointment.trCompanyName }}
         </td>
@@ -95,7 +97,7 @@
   </table>
   }
 
-  <p>
+  <p *ngIf="userType === 'TruckingCompany'">
     <span style="color: red">*</span> Terminal operator has authority to
     approve/cancel your appointment.
   </p>

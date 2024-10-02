@@ -36,6 +36,7 @@ export class RegisterComponent {
       }),
       terminal: this.fb.group({
         portName: ['', Validators.required],
+        terminalName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         address: ['', Validators.required],

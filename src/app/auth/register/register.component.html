@@ -174,6 +174,27 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="terminalName">Terminal Name:</label>
+          <input
+            id="terminalName"
+            formControlName="terminalName"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('terminalName')?.invalid &&
+              registrationForm.get('terminal')?.get('terminalName')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('terminalName')?.errors?.['required']"
+              >Terminal Name is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
           <label for="email">Email:</label>
           <input
             id="email"

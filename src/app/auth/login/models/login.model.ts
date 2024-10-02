@@ -10,6 +10,7 @@ export interface LoginReq {
 
 export interface TerminalData {
   portName: string;
+  terminalName: string;
   email: string;
   address: string;
   city: string;

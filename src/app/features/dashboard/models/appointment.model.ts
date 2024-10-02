@@ -1,6 +1,7 @@
 export interface Appointment {
   appointmentId: number;
   portName: string;
+  terminalName: string;
   address: string;
   city: string;
   state: string;
