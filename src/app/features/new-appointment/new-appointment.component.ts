@@ -46,7 +46,10 @@ export class NewAppointmentComponent {
     this.appointmentForm = this.fb.group({
       terminalId: ['', Validators.required],
       driverId: ['', Validators.required],
-      containerNumber: ['', Validators.required],
+      containerNumber: [
+        '',
+        [Validators.required, Validators.pattern(/^[A-Za-z]{3}[0-9]{8}$/)],
+      ],
       moveType: ['', Validators.required],
       sizeType: ['', Validators.required],
       line: ['', Validators.required],

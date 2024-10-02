@@ -1,11 +1,11 @@
-<div class="appointment-form">
+<div class="appointment-form card shadow-lg p-4">
   <!-- Step 1: Terminal and Driver Selection -->
   <div *ngIf="step === 1">
-    <h2>Step 1: Select Terminal and Driver</h2>
+    <h4 class="mb-4">Step 1: Select Terminal and Driver</h4>
     <form [formGroup]="appointmentForm">
-      <div class="form-group">
-        <label for="terminal">Select a terminal:</label>
-        <select formControlName="terminalId" class="form-control">
+      <div class="form-group mb-3">
+        <label for="terminal" class="form-label">Select a Terminal</label>
+        <select formControlName="terminalId" class="form-select">
           <option value="" disabled>Select Terminal</option>
           <option
             *ngFor="let terminal of terminals"
@@ -25,9 +25,9 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="driver">Select a driver:</label>
-        <select formControlName="driverId" class="form-control">
+      <div class="form-group mb-3">
+        <label for="driver" class="form-label">Select a Driver</label>
+        <select formControlName="driverId" class="form-select">
           <option value="" disabled>Select Driver</option>
           <option *ngFor="let driver of drivers" [value]="driver.driverId">
             {{ driver.driverName }}
@@ -45,26 +45,30 @@
       </div>
 
       <!-- Conditional "Add Driver" Link -->
-      <div *ngIf="drivers.length === 0">
+      <div *ngIf="drivers.length === 0" class="text-muted mt-3">
         <p>
           No drivers available.
-          <a [routerLink]="['/dashboard/drivers/add']">Add a new driver</a>
+          <a [routerLink]="['/dashboard/drivers/add']" class="text-primary"
+            >Add a new driver</a
+          >
           before proceeding.
         </p>
       </div>
 
-      <button type="button" class="btn btn-primary" (click)="goToStep(2)">
-        Next
-      </button>
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-primary" (click)="goToStep(2)">
+          Next
+        </button>
+      </div>
     </form>
   </div>
 
   <!-- Step 2: Container and Details -->
   <div *ngIf="step === 2">
-    <h2>Step 2: Container Details</h2>
+    <h4 class="mb-4">Step 2: Container details</h4>
     <form [formGroup]="appointmentForm">
-      <div class="form-group">
-        <label for="containerNumber">Container Number</label>
+      <div class="form-group mb-3">
+        <label for="containerNumber" class="form-label">Container Number</label>
         <input
           formControlName="containerNumber"
           type="text"
@@ -77,12 +81,22 @@
           "
           class="text-danger"
         >
-          Container Number is required.
+          <div
+            *ngIf="appointmentForm.get('containerNumber')?.errors?.['required']"
+          >
+            Container Number is required.
+          </div>
+          <small
+            *ngIf="appointmentForm.get('containerNumber')?.errors?.['pattern']"
+          >
+            Container Number must be 11 characters long, with the first 3
+            letters as alphabets and the remaining 8 digits.
+          </small>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="moveType">Move Type</label>
+      <div class="form-group mb-3">
+        <label for="moveType" class="form-label">Move Type</label>
         <input formControlName="moveType" type="text" class="form-control" />
         <div
           *ngIf="
@@ -95,8 +109,8 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="sizeType">Container Size</label>
+      <div class="form-group mb-3">
+        <label for="sizeType" class="form-label">Container Size</label>
         <input formControlName="sizeType" type="text" class="form-control" />
         <div
           *ngIf="
@@ -109,8 +123,8 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="line">Line</label>
+      <div class="form-group mb-3">
+        <label for="line" class="form-label">Line</label>
         <input formControlName="line" type="text" class="form-control" />
         <div
           *ngIf="
@@ -123,23 +137,25 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="needChassis">Need Chassis</label>
-        <div class="custom-control custom-switch">
+      <div class="form-group mb-3">
+        <div class="form-check form-switch">
           <input
             type="checkbox"
-            class="custom-control-input"
+            class="form-check-input"
+            role="switch"
             id="needChassis"
             formControlName="needChassis"
             (change)="toggleChassisField($event)"
           />
-          <label class="custom-control-label" for="needChassis">Yes/No</label>
+          <label class="custom-control-label" for="needChassis"
+            >Need Chassis(Yes/No)</label
+          >
         </div>
       </div>
 
       <!-- Chassis Number Field - Conditionally displayed -->
-      <div class="form-group" *ngIf="showChassisNumberField">
-        <label for="chassisNo">Chassis Number</label>
+      <div class="form-group mb-3" *ngIf="showChassisNumberField">
+        <label for="chassisNo" class="form-label">Chassis Number</label>
         <input
           type="text"
           id="chassisNo"
@@ -157,12 +173,14 @@
         </div>
       </div>
 
-      <button type="button" class="btn btn-secondary" (click)="goToStep(1)">
-        Back
-      </button>
-      <button type="submit" class="btn btn-success" (click)="submitForm()">
-        Submit
-      </button>
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" (click)="goToStep(1)">
+          Back
+        </button>
+        <button type="submit" class="btn btn-success" (click)="submitForm()">
+          Submit
+        </button>
+      </div>
     </form>
 
     <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
