@@ -8,6 +8,7 @@ import { NewAppointmentComponent } from './features/new-appointment/new-appointm
 import { AppointmentListComponent } from './features/appointment-list/appointment-list.component';
 import { DriverListComponent } from './features/driver-list/driver-list.component';
 import { AddUpdateDriverComponent } from './features/add-update-driver/add-update-driver.component';
+import { UpdateAppointmentComponent } from './features/update-appointment/update-appointment.component';
 
 export const routes: Routes = [
   {
@@ -27,7 +28,7 @@ export const routes: Routes = [
       { path: 'new-appointment', component: NewAppointmentComponent },
       {
         path: 'update-appointment/:id',
-        component: NewAppointmentComponent,
+        component: UpdateAppointmentComponent,
       },
       {
         path: 'drivers',

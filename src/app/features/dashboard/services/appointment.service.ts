@@ -81,4 +81,20 @@ export class AppointmentService {
       }
     );
   }
+
+  updateAppointmentDateTime(
+    appointmentId: number,
+    updatedInfo: any
+  ): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/update-appointment/${appointmentId}`,
+      updatedInfo,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.authService.getToken()}`,
+        }),
+      }
+    );
+  }
 }

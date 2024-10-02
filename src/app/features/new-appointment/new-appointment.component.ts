@@ -89,7 +89,6 @@ export class NewAppointmentComponent {
   toggleChassisField(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const isChecked = inputElement.checked;
-    console.log('isChecked...', isChecked);
 
     const chassisControl = this.appointmentForm.get('chassisNo');
 
