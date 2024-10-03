@@ -56,15 +56,18 @@
       </div>
 
       <div class="d-flex justify-content-end mt-4">
-        <button type="button" class="btn btn-danger me-2" (click)="navigateToHome()">
+        <button
+          type="button"
+          class="btn btn-danger me-2"
+          (click)="navigateToHome()"
+        >
           Cancel
         </button>
-        
+
         <button type="button" class="btn btn-primary" (click)="goToStep(2)">
           Next
         </button>
       </div>
-     
     </form>
   </div>
 
@@ -94,8 +97,8 @@
           <small
             *ngIf="appointmentForm.get('containerNumber')?.errors?.['pattern']"
           >
-            Container Number must be 11 characters long, with the first 3
-            letters as alphabets and the remaining 8 digits.
+            Container Number must be 11 characters long, with the first 4
+            letters as alphabets and the remaining 7 digits.
           </small>
         </div>
       </div>
@@ -194,13 +197,17 @@
         </button>
 
         <div>
-        <button type="button" class="btn btn-danger me-2" (click)="navigateToHome()">
-          Cancel
-        </button>
-        <button type="button" class="btn btn-primary" (click)="goToStep(3)">
-          Next
-        </button>
-      </div>
+          <button
+            type="button"
+            class="btn btn-danger me-2"
+            (click)="navigateToHome()"
+          >
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" (click)="goToStep(3)">
+            Next
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -252,13 +259,17 @@
           Back
         </button>
         <div>
-        <button type="button" class="btn btn-danger me-2" (click)="navigateToHome()">
-          Cancel
-        </button>
-        <button type="submit" class="btn btn-success" (click)="submitForm()">
-          Submit
-        </button>
-      </div>
+          <button
+            type="button"
+            class="btn btn-danger me-2"
+            (click)="navigateToHome()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-success" (click)="submitForm()">
+            Submit
+          </button>
+        </div>
       </div>
     </form>
 

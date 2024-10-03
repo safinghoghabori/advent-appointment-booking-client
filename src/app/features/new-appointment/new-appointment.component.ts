@@ -52,7 +52,7 @@ export class NewAppointmentComponent {
       driverId: ['', Validators.required],
       containerNumber: [
         '',
-        [Validators.required, Validators.pattern(/^[A-Za-z]{3}[0-9]{8}$/)],
+        [Validators.required, Validators.pattern(/^[A-Za-z]{4}[0-9]{7}$/)],
       ],
       moveType: ['', Validators.required],
       sizeType: ['', Validators.required],
