@@ -85,6 +85,10 @@ export class NewAppointmentComponent {
     });
   }
 
+  navigateToHome() {
+    this.router.navigate(['/dashboard']); // Navigate to home page
+  }
+
   // Toggle the chassis number field validation and visibility
   toggleChassisField(event: Event) {
     const inputElement = event.target as HTMLInputElement;

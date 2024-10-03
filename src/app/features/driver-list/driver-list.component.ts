@@ -26,6 +26,9 @@ export class DriverListComponent {
     this.loadDrivers();
   }
 
+  navigateToHome() {
+    this.router.navigate(['/dashboard']); // Navigate to home page
+  }
   loadDrivers(): void {
     const trCompanyData = this.authService.getUserData() as TrCompanyResp;
 

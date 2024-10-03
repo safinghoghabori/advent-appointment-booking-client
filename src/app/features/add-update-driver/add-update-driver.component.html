@@ -1,5 +1,6 @@
 <div class="container mt-4">
-  <h2>{{ isUpdate ? "Update Driver" : "Add Driver" }}</h2>
+  <div class="appointment-form card shadow-lg p-4 mx-auto" style="max-width: 800px;">
+    <h2>{{ isUpdate ? "Update Driver" : "Add Driver" }}</h2>
 
   <form [formGroup]="driverForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
@@ -58,6 +59,7 @@
         Enter a valid Phone Number (10-15 digits).
       </div>
     </div>
+    <br>
 
     <button
       type="submit"
@@ -66,5 +68,15 @@
     >
       {{ isUpdate ? "Update" : "Add" }}
     </button>
+
+    <!-- for home button  -->
+    <button
+    type="button"
+    class="btn btn-danger ms-2"
+    (click)="navigateToHome()"
+  >
+    Cancel
+  </button>
   </form>
+</div>
 </div>

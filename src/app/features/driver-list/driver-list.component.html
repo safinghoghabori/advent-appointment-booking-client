@@ -1,7 +1,12 @@
 <div class="container-fluid mt-4">
-  <button class="btn btn-primary mb-3 mt-3" (click)="addDriver()">
+  <div class="mb-4">
+  <button class="btn btn-secondary" (click)="navigateToHome()">
+    Back to Home Page
+  </button>
+  <button class="btn btn-primary ms-2" (click)="addDriver()">
     Add Driver
   </button>
+</div>
 
   @if (drivers.length === 0) {
   <div class="alert alert-info" role="alert">
