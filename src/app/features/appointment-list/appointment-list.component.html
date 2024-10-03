@@ -1,5 +1,15 @@
 <div class="table-responsive container-fluid">
-  @if (appointments.length === 0) {
+  @if (isLoading) {
+  <div class="d-flex justify-content-center mt-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  } @else if (errorMessage) {
+  <div class="alert alert-danger mt-4" role="alert">
+    {{ errorMessage }}
+  </div>
+  } @else if (appointments.length === 0) {
   <div class="alert alert-info mt-5" role="alert">
     @if (userType === 'Terminal') { You do not have any upcoming appointments! }
     @else { You do not have any upcoming appointments. Click on

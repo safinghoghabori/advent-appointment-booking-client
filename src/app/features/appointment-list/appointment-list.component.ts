@@ -4,7 +4,6 @@ import { Appointment } from '../dashboard/models/appointment.model';
 import { Driver } from '../dashboard/models/driver.model';
 import { AppointmentService } from '../dashboard/services/appointment.service';
 import { AuthService } from '../../core/services/auth.service';
-import { DriverService } from '../dashboard/services/driver.service';
 import { Router } from '@angular/router';
 import { UserType } from '../../auth/login/models/login.model';
 import { AppointmentStatus } from '../../core/constants/constants';
@@ -21,11 +20,12 @@ export class AppointmentListComponent {
   drivers: Driver[] = [];
   userType: UserType | null = null;
   appointmentStatus = AppointmentStatus;
+  isLoading: boolean = false;
+  errorMessage: string | null = '';
 
   constructor(
     private appointmentService: AppointmentService,
     private authService: AuthService,
-    private driverService: DriverService,
     private router: Router
   ) {}
 
@@ -35,12 +35,17 @@ export class AppointmentListComponent {
   }
 
   loadAppointments() {
+    this.isLoading = true;
+    this.errorMessage = null;
+
     this.appointmentService.getAppointments().subscribe({
       next: (data) => {
+        this.isLoading = false;
         this.appointments = data;
       },
       error: (error) => {
-        console.error('Error fetching appointments', error);
+        this.isLoading = false;
+        this.errorMessage = error;
       },
     });
   }

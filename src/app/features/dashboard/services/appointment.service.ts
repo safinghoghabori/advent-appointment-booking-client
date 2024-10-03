@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { Terminal } from '../models/terminal.model';
+import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,15 +12,21 @@ import { Terminal } from '../models/terminal.model';
 export class AppointmentService {
   private apiUrl = 'https://localhost:7189/api/appointment';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private errorHandlerService: ErrorHandlerService
+  ) {}
 
   getAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}/all`, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
-      }),
-    });
+    return this.http
+      .get<Appointment[]>(`${this.apiUrl}/allsfd`, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.authService.getToken()}`,
+        }),
+      })
+      .pipe(catchError(this.errorHandlerService.handleError));
   }
 
   getAppointmentById(id: string): Observable<Appointment> {
