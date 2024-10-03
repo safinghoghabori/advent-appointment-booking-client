@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
 import { AuthService } from '../../../core/services/auth.service';
-import { Terminal } from '../models/terminal.model';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 
 @Injectable({
