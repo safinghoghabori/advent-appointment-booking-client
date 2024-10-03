@@ -56,7 +56,8 @@
         <td
           *ngIf="
             userType === 'TruckingCompany' &&
-            appointment.appointmentStatus !== appointmentStatus.Canceled
+            appointment.appointmentStatus !== appointmentStatus.Canceled &&
+            appointment.appointmentStatus !== appointmentStatus.Approved
           "
         >
           <button
@@ -95,12 +96,16 @@
   </table>
   }
 
-  <p *ngIf="userType === 'TruckingCompany'">
-    <span style="color: red">*</span> Terminal operator has authority to
-    approve/cancel your appointment.
-  </p>
-  <p *ngIf="userType === 'TruckingCompany'">
-    <span style="color: red">*</span> Once appointment is created, you can
-    updated date and time slot only.
-  </p>
+  <div *ngIf="userType === 'TruckingCompany'">
+    <p>Notes:</p>
+    <ol>
+      <li>
+        Terminal operator has authority to approve/cancel your appointment.
+      </li>
+      <li>You can not update approved/canceled appointments.</li>
+      <li>
+        Once appointment is created, you can update date and time slot only.
+      </li>
+    </ol>
+  </div>
 </div>
