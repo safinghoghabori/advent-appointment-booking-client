@@ -14,6 +14,7 @@ import {
   TrCompanyFormData,
 } from '../../auth/register/models/register.model';
 import { isPlatformBrowser } from '@angular/common';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private errorHandlerService: ErrorHandlerService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -40,7 +42,7 @@ export class AuthService {
           this.setUserData(response.data);
           this.router.navigate(['/dashboard']);
         }),
-        catchError(this.handleError)
+        catchError(this.errorHandlerService.handleError)
       );
   }
 
@@ -58,7 +60,7 @@ export class AuthService {
           this.router.navigate(['/login']);
           return response.message;
         }),
-        catchError(this.handleError)
+        catchError(this.errorHandlerService.handleError)
       );
   }
 
@@ -111,17 +113,5 @@ export class AuthService {
 
       this.router.navigate(['/login']);
     }
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error occurred';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side error
-      errorMessage = error.error.message;
-    }
-    return throwError(errorMessage);
   }
 }
