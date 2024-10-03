@@ -62,6 +62,9 @@ export class AddUpdateDriverComponent {
     });
   }
 
+  navigateToHome() {
+    this.router.navigate(['/dashboard/drivers']);  }
+
   onSubmit(): void {
     if (this.driverForm.valid) {
       const driverData = this.driverForm.value as Driver;

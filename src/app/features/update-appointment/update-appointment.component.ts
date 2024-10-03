@@ -57,6 +57,9 @@ export class UpdateAppointmentComponent {
       });
   }
 
+  navigateToHome() {
+    this.router.navigate(['/dashboard']); // Navigate to home page
+  }
   onSubmit(): void {
     if (this.appointmentForm.valid) {
       const updatedInfo = this.appointmentForm.value;
