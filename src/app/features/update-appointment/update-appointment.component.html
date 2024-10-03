@@ -23,7 +23,9 @@
     <div class="form-group mb-3">
       <label for="driver" class="form-label">Time slot</label>
       <select formControlName="timeSlot" class="form-select">
-        <option value="" disabled>Select time slot</option>
+        <option value="{{ existingAppointment?.timeSlot }}" disabled>
+          {{ existingAppointment?.timeSlot }}
+        </option>
         <option *ngFor="let slot of availableTimeSlots" [value]="slot">
           {{ slot }}
         </option>
