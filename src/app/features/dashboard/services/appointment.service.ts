@@ -20,7 +20,7 @@ export class AppointmentService {
 
   getAppointments(): Observable<Appointment[]> {
     return this.http
-      .get<Appointment[]>(`${this.apiUrl}/allsfd`, {
+      .get<Appointment[]>(`${this.apiUrl}/all`, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this.authService.getToken()}`,
