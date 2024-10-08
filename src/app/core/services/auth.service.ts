@@ -62,6 +62,11 @@ export class AuthService {
       );
   }
 
+  isAuthenticated(): boolean {
+    const token = this.localStorageService.getToken();
+    return !!token;
+  }
+
   logout() {
     this.localStorageService.removeLocalStorageData();
     this.router.navigate(['/login']);

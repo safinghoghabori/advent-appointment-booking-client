@@ -9,6 +9,7 @@ import { AppointmentListComponent } from './features/appointment-list/appointmen
 import { DriverListComponent } from './features/driver-list/driver-list.component';
 import { AddUpdateDriverComponent } from './features/add-update-driver/add-update-driver.component';
 import { UpdateAppointmentComponent } from './features/update-appointment/update-appointment.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -38,5 +39,6 @@ export const routes: Routes = [
       { path: 'drivers/add', component: AddUpdateDriverComponent },
       { path: 'drivers/update/:id', component: AddUpdateDriverComponent },
     ],
+    canActivate: [AuthGuard],
   },
 ];
