@@ -10,6 +10,7 @@ import { DriverListComponent } from './features/driver-list/driver-list.componen
 import { AddUpdateDriverComponent } from './features/add-update-driver/add-update-driver.component';
 import { UpdateAppointmentComponent } from './features/update-appointment/update-appointment.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { UnAuthGuard } from './core/guards/un-auth.guard';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,7 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
     ],
+    canActivate: [UnAuthGuard],
   },
   {
     path: 'dashboard',
