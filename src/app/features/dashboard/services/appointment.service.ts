@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
-import { AuthService } from '../../../core/services/auth.service';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class AppointmentService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
+    private localStorageService: LocalStorageService,
     private errorHandlerService: ErrorHandlerService
   ) {}
 
@@ -22,7 +22,7 @@ export class AppointmentService {
       .get<Appointment[]>(`${this.apiUrl}/all`, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.authService.getToken()}`,
+          Authorization: `Bearer ${this.localStorageService.getToken()}`,
         }),
       })
       .pipe(catchError(this.errorHandlerService.handleError));
@@ -32,7 +32,7 @@ export class AppointmentService {
     return this.http.get<Appointment>(`${this.apiUrl}/get/${id}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -41,7 +41,7 @@ export class AppointmentService {
     return this.http.post<Appointment>(`${this.apiUrl}/create`, appointment, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -50,7 +50,7 @@ export class AppointmentService {
     return this.http.delete(`${this.apiUrl}/delete/${appointmentId}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -59,7 +59,7 @@ export class AppointmentService {
     return this.http.put(`${this.apiUrl}/cancel/${appointmentId}`, null, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -68,7 +68,7 @@ export class AppointmentService {
     return this.http.put(`${this.apiUrl}/approve/${appointmentId}`, null, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -82,7 +82,7 @@ export class AppointmentService {
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.authService.getToken()}`,
+          Authorization: `Bearer ${this.localStorageService.getToken()}`,
         }),
       }
     );
@@ -98,7 +98,7 @@ export class AppointmentService {
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.authService.getToken()}`,
+          Authorization: `Bearer ${this.localStorageService.getToken()}`,
         }),
       }
     );

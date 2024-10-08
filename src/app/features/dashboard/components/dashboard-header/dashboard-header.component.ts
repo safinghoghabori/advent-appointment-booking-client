@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { LocalStorageService } from '../../../../core/services/local-storage.service';
 
 @Component({
   selector: 'dashboard-header',
@@ -21,9 +22,13 @@ export class DashboardHeaderComponent {
   userType: string | null = '';
   userData: TrCompanyData | TerminalData | undefined;
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.userData = this.authService.getUserData();
-    this.userType = this.authService.getUserType();
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService
+  ) {
+    this.userData = this.localStorageService.getUserData();
+    this.userType = this.localStorageService.getUserType();
   }
 
   getUserName(): string {

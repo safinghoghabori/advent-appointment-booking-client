@@ -10,12 +10,12 @@ import { Driver } from '../dashboard/models/driver.model';
 import { AppointmentService } from '../dashboard/services/appointment.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DriverService } from '../dashboard/services/driver.service';
-import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
 import { CommonModule } from '@angular/common';
 import { TerminalService } from '../dashboard/services/terminal.service';
 import { Appointment } from '../dashboard/models/appointment.model';
 import { MOVE_TYPES, SIZE_TYPES } from '../../core/constants/constants';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-new-appointment',
@@ -42,7 +42,7 @@ export class NewAppointmentComponent {
     private fb: FormBuilder,
     private appointmentService: AppointmentService,
     private driverService: DriverService,
-    private authService: AuthService,
+    private localStorageService: LocalStorageService,
     private terminalService: TerminalService,
     private router: Router,
     private route: ActivatedRoute
@@ -65,7 +65,8 @@ export class NewAppointmentComponent {
   }
 
   ngOnInit(): void {
-    this.trCompanyData = this.authService.getUserData() as TrCompanyResp;
+    this.trCompanyData =
+      this.localStorageService.getUserData() as TrCompanyResp;
     this.loadTerminals();
     this.loadDrivers();
 

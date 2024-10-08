@@ -44,7 +44,6 @@ export class LoginComponent {
     this.isLoading = true;
     this.authService.login(credentials, userType).subscribe({
       next: (response) => {
-        // Utilize the response
         this.isLoading = false;
       },
       error: (error) => {

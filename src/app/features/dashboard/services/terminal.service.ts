@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Terminal } from '../models/terminal.model';
-import { AuthService } from '../../../core/services/auth.service';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,13 +10,16 @@ import { AuthService } from '../../../core/services/auth.service';
 export class TerminalService {
   private apiUrl = 'https://localhost:7189/api/terminals';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService
+  ) {}
 
   getTerminals(): Observable<Terminal[]> {
     return this.http.get<Terminal[]>(`${this.apiUrl}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }

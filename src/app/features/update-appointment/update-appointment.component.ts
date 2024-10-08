@@ -6,11 +6,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
 import { AppointmentService } from '../dashboard/services/appointment.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Appointment } from '../dashboard/models/appointment.model';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-update-appointment',
@@ -29,12 +29,13 @@ export class UpdateAppointmentComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private localStorageService: LocalStorageService,
     private appointmentService: AppointmentService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.trCompanyData = this.authService.getUserData() as TrCompanyResp;
+    this.trCompanyData =
+      this.localStorageService.getUserData() as TrCompanyResp;
     this.appointmentId = this.route.snapshot.paramMap.get('id');
 
     this.appointmentForm = this.fb.group({

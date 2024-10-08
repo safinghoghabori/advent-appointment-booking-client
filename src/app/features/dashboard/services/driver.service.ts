@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Driver } from '../models/driver.model';
-import { AuthService } from '../../../core/services/auth.service';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,10 @@ import { AuthService } from '../../../core/services/auth.service';
 export class DriverService {
   private apiUrl = 'https://localhost:7189/api/driver';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private localStorageService: LocalStorageService
+  ) {}
 
   getDrivers(trCompanyId: number): Observable<Driver[]> {
     return this.http.get<Driver[]>(
@@ -18,7 +21,7 @@ export class DriverService {
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.authService.getToken()}`,
+          Authorization: `Bearer ${this.localStorageService.getToken()}`,
         }),
       }
     );
@@ -28,7 +31,7 @@ export class DriverService {
     return this.http.get<Driver>(`${this.apiUrl}/${id}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -37,7 +40,7 @@ export class DriverService {
     return this.http.post<Driver>(this.apiUrl, driver, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -46,7 +49,7 @@ export class DriverService {
     return this.http.put<Driver>(`${this.apiUrl}/${id}`, driver, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }
@@ -55,7 +58,7 @@ export class DriverService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authService.getToken()}`,
+        Authorization: `Bearer ${this.localStorageService.getToken()}`,
       }),
     });
   }

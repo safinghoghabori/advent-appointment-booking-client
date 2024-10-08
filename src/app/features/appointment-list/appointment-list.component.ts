@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 import { Appointment } from '../dashboard/models/appointment.model';
 import { Driver } from '../dashboard/models/driver.model';
 import { AppointmentService } from '../dashboard/services/appointment.service';
-import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { UserType } from '../../auth/login/models/login.model';
 import { AppointmentStatus } from '../../core/constants/constants';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-appointment-list',
@@ -25,12 +25,12 @@ export class AppointmentListComponent {
 
   constructor(
     private appointmentService: AppointmentService,
-    private authService: AuthService,
+    private localStorageService: LocalStorageService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.userType = this.authService.getUserType();
+    this.userType = this.localStorageService.getUserType();
     this.loadAppointments();
   }
 
