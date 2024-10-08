@@ -13,12 +13,13 @@ import {
 } from '../../auth/register/models/register.model';
 import { ErrorHandlerService } from './error-handler.service';
 import { LocalStorageService } from './local-storage.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7189/api';
+  private apiUrl = environment.baseUrl;
 
   constructor(
     private http: HttpClient,

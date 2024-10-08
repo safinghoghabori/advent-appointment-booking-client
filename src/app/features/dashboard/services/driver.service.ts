@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Driver } from '../models/driver.model';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DriverService {
-  private apiUrl = 'https://localhost:7189/api/driver';
+  private apiUrl = `${environment.baseUrl}/driver`;
 
   constructor(
     private http: HttpClient,

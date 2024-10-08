@@ -4,12 +4,13 @@ import { catchError, Observable } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
 import { ErrorHandlerService } from '../../../core/services/error-handler.service';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
-  private apiUrl = 'https://localhost:7189/api/appointment';
+  private apiUrl = `${environment.baseUrl}/appointment`;
 
   constructor(
     private http: HttpClient,
