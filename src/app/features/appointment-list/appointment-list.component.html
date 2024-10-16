@@ -1,4 +1,6 @@
 <div class="table-responsive container-fluid">
+  <div class="table-responsive container-fluid">
+    <div class="mb-3 mt-3">
   @if (isLoading) {
   <div class="d-flex justify-content-center mt-5">
     <div class="spinner-border" role="status">
@@ -9,14 +11,54 @@
   <div class="alert alert-danger mt-4" role="alert">
     {{ errorMessage }}
   </div>
-  } @else if (appointments.length === 0) {
-  <div class="alert alert-info mt-5" role="alert">
+  } @else if (filteredAppointments.length === 0) {
+  <div class="alert alert-info mt-5 text-center" role="alert">
     @if (userType === 'Terminal') { You do not have any upcoming appointments! }
     @else { You do not have any upcoming appointments. Click on
     <b>New Appointment</b> to schedule an appointment! }
   </div>
   } @else {
-  <table class="table table-hover table-bordered table-striped">
+    <button   class="btn btn-primary btn text-bg-light" (click)="toggleFilterOptions()"> Filter
+      <i class="bi bi-filter"></i> 
+    </button>
+  
+    <div *ngIf="showFilterOptions" class="mt-3 text-start">
+      <div class="row mb-3">
+        <div class="col-12 col-md-3">
+          <label for="driverSearch">Search by Driver Name:</label>
+          <select id="driverSearch" class="form-select" [(ngModel)]="selectedDriver" (change)="filterAppointments()">
+            <option value="">All Drivers</option>
+            <option *ngFor="let driver of uniqueDrivers" [value]="driver">{{ driver }}</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="statusSearch">Search by Status:</label>
+          <select id="statusSearch" class="form-select" [(ngModel)]="selectedStatus" (change)="filterAppointments()">
+            <option value="">All</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Canceled">Canceled</option>
+            <option value="Approved">Approved</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3" *ngIf="userType === 'TruckingCompany'">
+          <label for="terminalSearch">Search by Terminal Name:</label>
+          <select id="terminalSearch" class="form-select" [(ngModel)]="selectedTerminal" (change)="filterAppointments()">
+            <option value="">All Terminals</option>
+            <option *ngFor="let terminal of uniqueTerminals" [value]="terminal">{{ terminal }}</option>
+          </select>
+        </div>
+        
+        <div class="col-12 col-md-3">
+          <label for="dateSearch">Search by Date:</label>
+          <input type="date" id="dateSearch" class="form-control" [(ngModel)]="selectedDate" (change)="filterAppointments()">
+        </div>
+        <div class ="col text-end">
+        <button type="button" class="btn btn-secondary mt-3" (click)="resetFilters()">Reset</button>
+        </div>
+      </div>
+    </div>
+    
+  <table class="table table-hover table-bordered table-striped text-center">
     <thead class="table-info">
       <tr>
         <th>Id</th>
@@ -35,7 +77,7 @@
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      <tr *ngFor="let appointment of appointments">
+      <tr *ngFor="let appointment of displayedAppointments">
         <td>{{ appointment.appointmentId }}</td>
         <td>{{ appointment.portName }}</td>
         <td>{{ appointment.terminalName }}</td>
@@ -64,15 +106,12 @@
         </td>
         <td>{{ appointment.appointmentDate }} , {{ appointment.timeSlot }}</td>
         <td
-          *ngIf="
-            userType === 'TruckingCompany' &&
-            appointment.appointmentStatus !== appointmentStatus.Canceled &&
-            appointment.appointmentStatus !== appointmentStatus.Approved
-          "
+          *ngIf="userType === 'TruckingCompany'"
         >
           <button
             class="btn btn-warning"
             (click)="updateAppointment(appointment.appointmentId)"
+            [disabled]="appointment.appointmentStatus !== appointmentStatus.Scheduled"
           >
             Update
           </button>
@@ -89,6 +128,7 @@
           <button
             class="btn btn-warning"
             (click)="cancelAppointment(appointment.appointmentId)"
+            [disabled]="appointment.appointmentStatus !== appointmentStatus.Scheduled"
           >
             Cancel
           </button>
@@ -97,6 +137,7 @@
           <button
             class="btn btn-info"
             (click)="approveAppointment(appointment.appointmentId)"
+            [disabled]="appointment.appointmentStatus !== appointmentStatus.Scheduled"
           >
             Approve
           </button>
@@ -104,9 +145,18 @@
       </tr>
     </tbody>
   </table>
+  <div class="mt-3 d-flex justify-content-between">
+    <button class="btn btn-secondary" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+      Previous
+    </button>
+    <span><b>Page {{ currentPage }} of {{ totalPages }}</b></span>
+    <button class="btn btn-secondary" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+      Next
+    </button>
+  </div>
   }
 
-  <div *ngIf="userType === 'TruckingCompany'">
+  <div class ="mt-5 text-start" *ngIf="userType === 'TruckingCompany'">
     <p>Notes:</p>
     <ol>
       <li>
@@ -118,6 +168,7 @@
       </li>
     </ol>
   </div>
+</div>
 </div>
 
 
