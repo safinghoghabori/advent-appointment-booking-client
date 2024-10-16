@@ -1,30 +1,31 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, throwError, Observable, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { catchError, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   LoginReq,
   LoginResp,
-  TerminalData,
-  TrCompanyData,
   UserType,
 } from '../../auth/login/models/login.model';
 import {
   TerminalFormData,
   TrCompanyFormData,
 } from '../../auth/register/models/register.model';
-import { isPlatformBrowser } from '@angular/common';
+import { ErrorHandlerService } from './error-handler.service';
+import { LocalStorageService } from './local-storage.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7189/api';
+  private apiUrl = environment.baseUrl;
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private errorHandlerService: ErrorHandlerService,
+    private localStorageService: LocalStorageService
   ) {}
 
   login(credentials: LoginReq, userType: UserType): Observable<LoginResp> {
@@ -35,12 +36,12 @@ export class AuthService {
       )
       .pipe(
         tap((response: LoginResp) => {
-          this.setUserType(userType);
-          this.setToken(response.token);
-          this.setUserData(response.data);
+          this.localStorageService.setUserType(userType);
+          this.localStorageService.setToken(response.token);
+          this.localStorageService.setUserData(response.data);
           this.router.navigate(['/dashboard']);
         }),
-        catchError(this.handleError)
+        catchError(this.errorHandlerService.handleError)
       );
   }
 
@@ -58,70 +59,17 @@ export class AuthService {
           this.router.navigate(['/login']);
           return response.message;
         }),
-        catchError(this.handleError)
+        catchError(this.errorHandlerService.handleError)
       );
   }
 
-  setToken(token: string) {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('authToken', token);
-    }
-  }
-
-  getToken(): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('authToken');
-    }
-    return null;
-  }
-
-  setUserData(userData: TerminalData | TrCompanyData): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('userData', JSON.stringify(userData));
-    }
-  }
-
-  getUserData(): TerminalData | TrCompanyData {
-    if (isPlatformBrowser(this.platformId)) {
-      const userData = localStorage.getItem('userData');
-      return userData ? JSON.parse(userData) : [];
-    }
-    return {} as TerminalData | TrCompanyData;
-  }
-
-  setUserType(userType: UserType) {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('userType', userType);
-    }
-  }
-
-  getUserType(): UserType | null {
-    if (isPlatformBrowser(this.platformId)) {
-      const userType = localStorage.getItem('userType');
-      return userType as UserType;
-    }
-    return null;
+  isAuthenticated(): boolean {
+    const token = this.localStorageService.getToken();
+    return !!token;
   }
 
   logout() {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userData');
-      localStorage.removeItem('userType');
-
-      this.router.navigate(['/login']);
-    }
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error occurred';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side error
-      errorMessage = error.error.message;
-    }
-    return throwError(errorMessage);
+    this.localStorageService.removeLocalStorageData();
+    this.router.navigate(['/login']);
   }
 }

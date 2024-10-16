@@ -9,8 +9,8 @@ import {
 import { DriverService } from '../dashboard/services/driver.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Driver } from '../dashboard/models/driver.model';
-import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-add-update-driver',
@@ -29,7 +29,7 @@ export class AddUpdateDriverComponent {
     private driverService: DriverService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -63,7 +63,8 @@ export class AddUpdateDriverComponent {
   }
 
   navigateToHome() {
-    this.router.navigate(['/dashboard/drivers']);  }
+    this.router.navigate(['/dashboard/drivers']);
+  }
 
   onSubmit(): void {
     if (this.driverForm.valid) {
@@ -77,7 +78,7 @@ export class AddUpdateDriverComponent {
       } else {
         const driverDataWithCompanyId = {
           ...driverData,
-          trCompanyId: (this.authService.getUserData() as TrCompanyResp)
+          trCompanyId: (this.localStorageService.getUserData() as TrCompanyResp)
             .trCompanyId,
         };
         this.driverService.addDriver(driverDataWithCompanyId).subscribe({

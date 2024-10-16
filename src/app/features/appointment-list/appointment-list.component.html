@@ -1,55 +1,63 @@
 <div class="table-responsive container-fluid">
   <div class="table-responsive container-fluid">
     <div class="mb-3 mt-3">
-      <button   class="btn btn-primary btn text-bg-light" (click)="toggleFilterOptions()"> Filter
-        <i class="bi bi-filter"></i> 
-      </button>
-    
-      <div *ngIf="showFilterOptions" class="mt-3 text-start">
-        <div class="row mb-3">
-          <div class="col-12 col-md-3">
-            <label for="driverSearch">Search by Driver Name:</label>
-            <select id="driverSearch" class="form-select" [(ngModel)]="selectedDriver" (change)="filterAppointments()">
-              <option value="">All Drivers</option>
-              <option *ngFor="let driver of uniqueDrivers" [value]="driver">{{ driver }}</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-3">
-            <label for="statusSearch">Search by Status:</label>
-            <select id="statusSearch" class="form-select" [(ngModel)]="selectedStatus" (change)="filterAppointments()">
-              <option value="">All</option>
-              <option value="Scheduled">Scheduled</option>
-              <option value="Canceled">Canceled</option>
-              <option value="Approved">Approved</option>
-            </select>
-          </div>
-          <div class="col-12 col-md-3" *ngIf="userType === 'TruckingCompany'">
-            <label for="terminalSearch">Search by Terminal Name:</label>
-            <select id="terminalSearch" class="form-select" [(ngModel)]="selectedTerminal" (change)="filterAppointments()">
-              <option value="">All Terminals</option>
-              <option *ngFor="let terminal of uniqueTerminals" [value]="terminal">{{ terminal }}</option>
-            </select>
-          </div>
-          
-          <div class="col-12 col-md-3">
-            <label for="dateSearch">Search by Date:</label>
-            <input type="date" id="dateSearch" class="form-control" [(ngModel)]="selectedDate" (change)="filterAppointments()">
-          </div>
-          <div class ="col text-end">
-          <button type="button" class="btn btn-secondary mt-3" (click)="resetFilters()">Reset</button>
-          </div>
-        </div>
-      </div>
-      
-   
-  
-  @if (filteredAppointments.length === 0) {
+  @if (isLoading) {
+  <div class="d-flex justify-content-center mt-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  } @else if (errorMessage) {
+  <div class="alert alert-danger mt-4" role="alert">
+    {{ errorMessage }}
+  </div>
+  } @else if (filteredAppointments.length === 0) {
   <div class="alert alert-info mt-5 text-center" role="alert">
     @if (userType === 'Terminal') { You do not have any upcoming appointments! }
     @else { You do not have any upcoming appointments. Click on
     <b>New Appointment</b> to schedule an appointment! }
   </div>
   } @else {
+    <button   class="btn btn-primary btn text-bg-light" (click)="toggleFilterOptions()"> Filter
+      <i class="bi bi-filter"></i> 
+    </button>
+  
+    <div *ngIf="showFilterOptions" class="mt-3 text-start">
+      <div class="row mb-3">
+        <div class="col-12 col-md-3">
+          <label for="driverSearch">Search by Driver Name:</label>
+          <select id="driverSearch" class="form-select" [(ngModel)]="selectedDriver" (change)="filterAppointments()">
+            <option value="">All Drivers</option>
+            <option *ngFor="let driver of uniqueDrivers" [value]="driver">{{ driver }}</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="statusSearch">Search by Status:</label>
+          <select id="statusSearch" class="form-select" [(ngModel)]="selectedStatus" (change)="filterAppointments()">
+            <option value="">All</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Canceled">Canceled</option>
+            <option value="Approved">Approved</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3" *ngIf="userType === 'TruckingCompany'">
+          <label for="terminalSearch">Search by Terminal Name:</label>
+          <select id="terminalSearch" class="form-select" [(ngModel)]="selectedTerminal" (change)="filterAppointments()">
+            <option value="">All Terminals</option>
+            <option *ngFor="let terminal of uniqueTerminals" [value]="terminal">{{ terminal }}</option>
+          </select>
+        </div>
+        
+        <div class="col-12 col-md-3">
+          <label for="dateSearch">Search by Date:</label>
+          <input type="date" id="dateSearch" class="form-control" [(ngModel)]="selectedDate" (change)="filterAppointments()">
+        </div>
+        <div class ="col text-end">
+        <button type="button" class="btn btn-secondary mt-3" (click)="resetFilters()">Reset</button>
+        </div>
+      </div>
+    </div>
+    
   <table class="table table-hover table-bordered table-striped text-center">
     <thead class="table-info">
       <tr>
@@ -147,15 +155,19 @@
     </button>
   </div>
   }
- <div class ="mt-5 text-start">
-  <p *ngIf="userType === 'TruckingCompany'">
-    <span style="color: red">*</span> Terminal operator has authority to
-    approve/cancel your appointment.
-  </p>
-  <p *ngIf="userType === 'TruckingCompany'">
-    <span style="color: red">*</span> Once appointment is created, you can
-    updated date and time slot only.
-  </p>
+
+  <div class ="mt-5 text-start" *ngIf="userType === 'TruckingCompany'">
+    <p>Notes:</p>
+    <ol>
+      <li>
+        Terminal operator has authority to approve/cancel your appointment.
+      </li>
+      <li>You can not update approved/canceled appointments.</li>
+      <li>
+        Once appointment is created, you can update date and time slot only.
+      </li>
+    </ol>
+  </div>
 </div>
 </div>
 

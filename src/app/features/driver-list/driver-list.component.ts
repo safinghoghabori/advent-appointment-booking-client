@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Driver } from '../dashboard/models/driver.model';
 import { DriverService } from '../dashboard/services/driver.service';
 import { Router, RouterOutlet } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
 import { CommonModule } from '@angular/common';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-driver-list',
@@ -19,7 +19,7 @@ export class DriverListComponent {
   constructor(
     private driverService: DriverService,
     private router: Router,
-    private authService: AuthService
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +30,8 @@ export class DriverListComponent {
     this.router.navigate(['/dashboard']); // Navigate to home page
   }
   loadDrivers(): void {
-    const trCompanyData = this.authService.getUserData() as TrCompanyResp;
+    const trCompanyData =
+      this.localStorageService.getUserData() as TrCompanyResp;
 
     this.driverService.getDrivers(trCompanyData.trCompanyId).subscribe({
       next: (data) => {

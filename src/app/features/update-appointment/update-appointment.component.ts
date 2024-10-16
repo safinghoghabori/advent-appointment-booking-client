@@ -6,10 +6,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
 import { TrCompanyResp } from '../../auth/login/models/login.model';
 import { AppointmentService } from '../dashboard/services/appointment.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Appointment } from '../dashboard/models/appointment.model';
+import { LocalStorageService } from '../../core/services/local-storage.service';
 
 @Component({
   selector: 'app-update-appointment',
@@ -24,29 +25,53 @@ export class UpdateAppointmentComponent {
   availableTimeSlots: string[] = [];
   errorMessage: string = '';
   appointmentId: string | null;
+  existingAppointment: Appointment | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private localStorageService: LocalStorageService,
     private appointmentService: AppointmentService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.trCompanyData = this.authService.getUserData() as TrCompanyResp;
+    this.trCompanyData =
+      this.localStorageService.getUserData() as TrCompanyResp;
     this.appointmentId = this.route.snapshot.paramMap.get('id');
 
     this.appointmentForm = this.fb.group({
       appointmentDate: ['', Validators.required],
       timeSlot: ['', Validators.required],
     });
+
+    if (this.appointmentId) {
+      this.loadExistingAppointment(this.appointmentId);
+    }
+  }
+
+  private loadExistingAppointment(id: string): void {
+    this.appointmentService
+      .getAppointmentById(id)
+      .subscribe((appointment: Appointment) => {
+        this.existingAppointment = appointment;
+
+        this.appointmentForm.patchValue(appointment);
+        this.getTimeSlots(
+          this.trCompanyData.trCompanyId,
+          String(appointment.appointmentDate)
+        );
+      });
   }
 
   onDateChange(event: any) {
     const selectedDate = event.target.value;
     const trCompanyId = this.trCompanyData?.trCompanyId;
 
+    this.getTimeSlots(trCompanyId, selectedDate);
+  }
+
+  getTimeSlots(trCompanyId: number, selectedDate: string) {
     this.appointmentService
-      .getAvailableTimeSlots(trCompanyId!, selectedDate)
+      .getAvailableTimeSlots(trCompanyId, selectedDate)
       .subscribe({
         next: (slots) => {
           this.availableTimeSlots = slots;

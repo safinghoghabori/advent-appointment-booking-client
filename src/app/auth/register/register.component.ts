@@ -46,7 +46,8 @@ export class RegisterComponent {
       }),
     });
 
-    this.toggleRoleFields(); // Initially hide all fields
+    // Initially hide all fields
+    this.toggleRoleFields();
   }
 
   toggleRoleFields(): void {
@@ -82,7 +83,6 @@ export class RegisterComponent {
     this.authService.register(userData, role).subscribe({
       next: (response) => {
         this.isLoading = false;
-        console.log(response.message);
       },
       error: (error) => {
         this.isLoading = false;

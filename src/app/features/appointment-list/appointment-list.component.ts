@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { Appointment } from '../dashboard/models/appointment.model';
 import { Driver } from '../dashboard/models/driver.model';
 import { AppointmentService } from '../dashboard/services/appointment.service';
-import { AuthService } from '../../core/services/auth.service';
-import { DriverService } from '../dashboard/services/driver.service';
 import { Router } from '@angular/router';
 import { UserType } from '../../auth/login/models/login.model';
 import { AppointmentStatus } from '../../core/constants/constants';
 import { FormsModule } from '@angular/forms'; 
+import { LocalStorageService } from '../../core/services/local-storage.service';
+
 @Component({
   selector: 'app-appointment-list',
   standalone: true,
@@ -32,29 +32,35 @@ export class AppointmentListComponent {
   appointmentsPerPage = 5; 
   currentPage = 1; 
   totalPages = 1;
+  isLoading: boolean = false;
+  errorMessage: string | null = '';
 
   constructor( 
     private appointmentService: AppointmentService,
-    private authService: AuthService,
-    private driverService: DriverService,
+    private localStorageService: LocalStorageService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.userType = this.authService.getUserType();
+    this.userType = this.localStorageService.getUserType();
     this.loadAppointments();
   }
 
   loadAppointments() {
+    this.isLoading = true;
+    this.errorMessage = null;
+
     this.appointmentService.getAppointments().subscribe({
       next: (data) => {
+        this.isLoading = false;
         this.appointments = data;
         this.filteredAppointments = data; 
         this.extractUniqueDrivers(); 
         this.extractUniqueTerminal();
       },
       error: (error) => {
-        console.error('Error fetching appointments', error);
+        this.isLoading = false;
+        this.errorMessage = error;
       },
     });
   }
