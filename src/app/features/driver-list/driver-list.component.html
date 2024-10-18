@@ -13,8 +13,8 @@
     No drivers available! Click on <b>Add driver</b> to add new drivers.
   </div>
   } @else {
-  <table class="table table-striped table-bordered">
-    <thead class="">
+  <table class="table table-hover table-bordered table-striped text-center">
+    <thead class="table-info">
       <tr>
         <th>Driver Name</th>
         <th>Plate Number</th>
@@ -32,7 +32,7 @@
             class="btn btn-warning"
             (click)="updateDriver(driver.driverId)"
           >
-            Update
+          <i class="fa-solid fa-pen"></i>
           </button>
         </td>
         <td>
@@ -40,7 +40,7 @@
             class="btn btn-danger"
             (click)="deleteDriver(driver.driverId)"
           >
-            Delete
+          <i class="fa-solid fa-trash"></i>
           </button>
         </td>
       </tr>
