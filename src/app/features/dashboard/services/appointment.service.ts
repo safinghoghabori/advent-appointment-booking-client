@@ -74,6 +74,14 @@ export class AppointmentService {
     });
   }
 
+  downloadAppointmentsExcel(): Observable<Blob> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.localStorageService.getToken()}`,
+      'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+
+    return this.http.get(`${this.apiUrl}/all/?format=excel`, { headers, responseType: 'blob' });
+  }
   getAvailableTimeSlots(
     trCompanyId: number,
     date: string

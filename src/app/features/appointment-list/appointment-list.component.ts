@@ -8,7 +8,6 @@ import { UserType } from '../../auth/login/models/login.model';
 import { AppointmentStatus } from '../../core/constants/constants';
 import { FormsModule } from '@angular/forms'; 
 import { LocalStorageService } from '../../core/services/local-storage.service';
-
 @Component({
   selector: 'app-appointment-list',
   standalone: true,
@@ -102,6 +101,30 @@ export class AppointmentListComponent {
 
     this.currentPage = 1;
 }
+
+downloadExcel(){
+  this.appointmentService.downloadAppointmentsExcel().subscribe({
+    next: (response) => {
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create a link element and trigger the download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Appointments.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+    },
+    error: (error) => {
+      console.error('Error downloading the file:', error);
+      alert('Failed to download the file. Please try again.');
+    }
+  });
+  }
 
 resetFilters() {
   this.selectedDriver = '';
