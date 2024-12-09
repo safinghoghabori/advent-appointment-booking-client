@@ -1,0 +1,353 @@
+<div class="registration-container">
+  <div class="registration-section">
+    <h2>Register</h2>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="role">Register as:</label>
+        <select
+          id="role"
+          formControlName="role"
+          (change)="toggleRoleFields()"
+          class="form-control"
+        >
+          <option value="" disabled>Select role</option>
+          <option [value]="userType.TruckingCompany">Trucking Company</option>
+          <option [value]="userType.Terminal">Terminal</option>
+        </select>
+        <div
+          *ngIf="
+            registrationForm.get('role')?.invalid &&
+            registrationForm.get('role')?.touched
+          "
+          class="error"
+        >
+          <small>Please select a role.</small>
+        </div>
+      </div>
+
+      <!-- Trucking Company Form -->
+      <div
+        *ngIf="selectedRole === userType.TruckingCompany"
+        formGroupName="truckingCompany"
+      >
+        <div class="form-group">
+          <label for="trCompanyName">Trucking Company Name:</label>
+          <input
+            id="trCompanyName"
+            formControlName="trCompanyName"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('truckingCompany')?.get('trCompanyName')
+                ?.invalid &&
+              registrationForm.get('truckingCompany')?.get('trCompanyName')
+                ?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('truckingCompany')?.get('trCompanyName')?.errors?.['required']"
+              >Company Name is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('truckingCompany')?.get('email')?.invalid &&
+              registrationForm.get('truckingCompany')?.get('email')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('truckingCompany')?.get('email')?.errors?.['required']"
+              >Email is required.</small
+            >
+            <small
+              *ngIf="registrationForm.get('truckingCompany')?.get('email')?.errors?.['email']"
+              >Invalid email format.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            id="password"
+            formControlName="password"
+            type="password"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('truckingCompany')?.get('password')
+                ?.invalid &&
+              registrationForm.get('truckingCompany')?.get('password')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('truckingCompany')?.get('password')?.errors?.['required']"
+              >Password is required.</small
+            >
+            <small
+              *ngIf="registrationForm.get('truckingCompany')?.get('password')?.errors?.['minlength']"
+              >Password must be at least 6 characters long.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="gstNo">GST Number:</label>
+          <input
+            id="gstNo"
+            formControlName="gstNo"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('truckingCompany')?.get('gstNo')?.invalid &&
+              registrationForm.get('truckingCompany')?.get('gstNo')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('truckingCompany')?.get('gstNo')?.errors?.['required']"
+              >GST Number is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="transportLicNo">Transport License Number:</label>
+          <input
+            id="transportLicNo"
+            formControlName="transportLicNo"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('truckingCompany')?.get('transportLicNo')
+                ?.invalid &&
+              registrationForm.get('truckingCompany')?.get('transportLicNo')
+                ?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('truckingCompany')?.get('transportLicNo')?.errors?.['required']"
+              >Transport License Number is required.</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Terminal Form -->
+      <div *ngIf="selectedRole === userType.Terminal" formGroupName="terminal">
+        <div class="form-group">
+          <label for="portName">Port Name:</label>
+          <input
+            id="portName"
+            formControlName="portName"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('portName')?.invalid &&
+              registrationForm.get('terminal')?.get('portName')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('portName')?.errors?.['required']"
+              >Port Name is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="terminalName">Terminal Name:</label>
+          <input
+            id="terminalName"
+            formControlName="terminalName"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('terminalName')?.invalid &&
+              registrationForm.get('terminal')?.get('terminalName')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('terminalName')?.errors?.['required']"
+              >Terminal Name is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('email')?.invalid &&
+              registrationForm.get('terminal')?.get('email')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('email')?.errors?.['required']"
+              >Email is required.</small
+            >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('email')?.errors?.['email']"
+              >Invalid email format.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            id="password"
+            formControlName="password"
+            type="password"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('password')?.invalid &&
+              registrationForm.get('terminal')?.get('password')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('password')?.errors?.['required']"
+              >Password is required.</small
+            >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('password')?.errors?.['minlength']"
+              >Password must be at least 6 characters long.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input
+            id="address"
+            formControlName="address"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('address')?.invalid &&
+              registrationForm.get('terminal')?.get('address')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('address')?.errors?.['required']"
+              >Address is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="city">City:</label>
+          <input
+            id="city"
+            formControlName="city"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('city')?.invalid &&
+              registrationForm.get('terminal')?.get('city')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('city')?.errors?.['required']"
+              >City is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="state">State:</label>
+          <input
+            id="state"
+            formControlName="state"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('state')?.invalid &&
+              registrationForm.get('terminal')?.get('state')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('state')?.errors?.['required']"
+              >State is required.</small
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="country">Country:</label>
+          <input
+            id="country"
+            formControlName="country"
+            type="text"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('terminal')?.get('country')?.invalid &&
+              registrationForm.get('terminal')?.get('country')?.touched
+            "
+            class="error"
+          >
+            <small
+              *ngIf="registrationForm.get('terminal')?.get('country')?.errors?.['required']"
+              >Country is required.</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="registrationForm.invalid || isLoading"
+        class="btn btn-primary"
+      >
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+
+        Register
+      </button>
+    </form>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

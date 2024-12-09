@@ -1,0 +1,43 @@
+.appointment-form {
+  background-color: #ffffff;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.form-control {
+  border-radius: 4px;
+}
+
+.custom-control-label {
+  margin-left: 5px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-success {
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+h4 {
+  color: #3385ff;
+}
+
+.text-primary {
+  font-weight: bold;
+}
+
+#needChassis {
+  border: 1px solid grey;
+}
+
+@media (max-width: 768px) {
+  .appointment-form {
+    padding: 1.5rem;
+  }
+}

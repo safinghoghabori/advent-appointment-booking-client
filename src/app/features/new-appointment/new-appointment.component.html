@@ -1,0 +1,280 @@
+<div class="appointment-form card shadow-lg p-4">
+  <!-- Step 1: Terminal and Driver Selection -->
+  <div *ngIf="step === 1">
+    <h4 class="mb-4">Step 1: Add required data</h4>
+    <form [formGroup]="appointmentForm">
+      <div class="form-group mb-3">
+        <label for="terminal" class="form-label">Select Terminal</label>
+        <select formControlName="terminalId" class="form-select">
+          <option value="" disabled>Select</option>
+          <option
+            *ngFor="let terminal of terminals"
+            [value]="terminal.terminalId"
+          >
+            {{ terminal.terminalName }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('terminalId')?.invalid &&
+            appointmentForm.get('terminalId')?.touched
+          "
+          class="text-danger"
+        >
+          Terminal is required.
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="driver" class="form-label">Select a Driver</label>
+        <select formControlName="driverId" class="form-select">
+          <option value="" disabled>Select</option>
+          <option *ngFor="let driver of drivers" [value]="driver.driverId">
+            {{ driver.driverName }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('driverId')?.invalid &&
+            appointmentForm.get('driverId')?.touched
+          "
+          class="text-danger"
+        >
+          Driver is required.
+        </div>
+      </div>
+
+      <!-- Conditional "Add Driver" Link -->
+      <div *ngIf="drivers.length === 0" class="text-muted mt-3">
+        <p>
+          No drivers available.
+          <a [routerLink]="['/dashboard/drivers/add']" class="text-primary"
+            >Add a new driver</a
+          >
+          before proceeding.
+        </p>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button
+          type="button"
+          class="btn btn-danger me-2"
+          (click)="navigateToHome()"
+        >
+          Cancel
+        </button>
+
+        <button type="button" class="btn btn-primary" (click)="goToStep(2)">
+          Next
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Step 2: Container and Details -->
+  <div *ngIf="step === 2">
+    <h4 class="mb-4">Step 2: Add move details</h4>
+    <form [formGroup]="appointmentForm">
+      <div class="form-group mb-3">
+        <label for="containerNumber" class="form-label">Container Number</label>
+        <input
+          formControlName="containerNumber"
+          type="text"
+          class="form-control"
+        />
+        <div
+          *ngIf="
+            appointmentForm.get('containerNumber')?.invalid &&
+            appointmentForm.get('containerNumber')?.touched
+          "
+          class="text-danger"
+        >
+          <div
+            *ngIf="appointmentForm.get('containerNumber')?.errors?.['required']"
+          >
+            Container Number is required.
+          </div>
+          <small
+            *ngIf="appointmentForm.get('containerNumber')?.errors?.['pattern']"
+          >
+            Container Number must be 11 characters long, with the first 4
+            letters as alphabets and the remaining 7 digits.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="line" class="form-label">Line</label>
+        <input formControlName="line" type="text" class="form-control" />
+        <div
+          *ngIf="
+            appointmentForm.get('line')?.invalid &&
+            appointmentForm.get('line')?.touched
+          "
+          class="text-danger"
+        >
+          Line is required.
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="moveType" class="form-label">Move Type</label>
+        <select formControlName="moveType" class="form-select">
+          <option value="" disabled>Select</option>
+          <option *ngFor="let move of moveTypes" [value]="move.value">
+            {{ move.label }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('moveType')?.invalid &&
+            appointmentForm.get('moveType')?.touched
+          "
+          class="text-danger"
+        >
+          <small>Move Type is required.</small>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="sizeType" class="form-label">Container Size</label>
+        <select formControlName="sizeType" class="form-select">
+          <option value="" disabled>Select</option>
+          <option *ngFor="let size of sizeTypes" [value]="size.value">
+            {{ size.label }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('sizeType')?.invalid &&
+            appointmentForm.get('sizeType')?.touched
+          "
+          class="text-danger"
+        >
+          Container Size is required.
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <div class="form-check form-switch">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            role="switch"
+            id="needChassis"
+            formControlName="needChassis"
+            (change)="toggleChassisField($event)"
+          />
+          <label class="custom-control-label" for="needChassis"
+            >Need Chassis(Yes/No)</label
+          >
+        </div>
+      </div>
+
+      <!-- Chassis Number Field - Conditionally displayed -->
+      <div class="form-group mb-3" *ngIf="showChassisNumberField">
+        <label for="chassisNo" class="form-label">Chassis Number</label>
+        <input
+          type="text"
+          id="chassisNo"
+          class="form-control"
+          formControlName="chassisNo"
+        />
+        <div
+          *ngIf="
+            appointmentForm.get('chassisNo')?.invalid &&
+            appointmentForm.get('chassisNo')?.touched
+          "
+          class="text-danger"
+        >
+          Chassis Number is required.
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" (click)="goToStep(1)">
+          Back
+        </button>
+
+        <div>
+          <button
+            type="button"
+            class="btn btn-danger me-2"
+            (click)="navigateToHome()"
+          >
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" (click)="goToStep(3)">
+            Next
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Step 3: Select date and time slot -->
+  <div *ngIf="step === 3">
+    <h4 class="mb-4">Step 3: Choose appointment time</h4>
+    <form [formGroup]="appointmentForm">
+      <div class="form-group mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input
+          formControlName="appointmentDate"
+          type="date"
+          class="form-control"
+          (change)="onDateChange($event)"
+        />
+        <div
+          *ngIf="
+            appointmentForm.get('appointmentDate')?.invalid &&
+            appointmentForm.get('appointmentDate')?.touched
+          "
+          class="text-danger"
+        >
+          Date is required.
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="driver" class="form-label">Time slot</label>
+        <select formControlName="timeSlot" class="form-select">
+          <option value="" disabled>Select time slot</option>
+          <option *ngFor="let slot of availableTimeSlots" [value]="slot">
+            {{ slot }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            appointmentForm.get('timeSlot')?.invalid &&
+            appointmentForm.get('timeSlot')?.touched
+          "
+          class="text-danger"
+        >
+          Time slot is required.
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" (click)="goToStep(2)">
+          Back
+        </button>
+        <div>
+          <button
+            type="button"
+            class="btn btn-danger me-2"
+            (click)="navigateToHome()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-success" (click)="submitForm()">
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>
